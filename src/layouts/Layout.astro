@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+import Sidebar from '../components/Sidebar.astro';
+import CommandMenu from '../components/CommandMenu';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Your Portfolio" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-[var(--bg-dark)]">
+    <div class="flex flex-col md:flex-row min-h-screen bg-[var(--bg)]">
+      <aside class="w-full md:w-64 lg:w-72 xl:w-80 flex-shrink-0">
+        <Sidebar />
+      </aside>
+      <main class="flex-grow p-4 md:p-8">
+        <slot />
+      </main>
+    </div>
+    <CommandMenu client:load />
+  </body>
+</html>

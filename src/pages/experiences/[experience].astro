@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { experience: 'software-engineer-tech-corp' } },
+    { params: { experience: 'web-developer-web-solutions' } },
+    // Add more experiences
+  ];
+}
+
+const { experience } = Astro.params;
+---
+
+<Layout title={`Experience: ${experience}`}>
+  <h1>{experience}</h1>
+  <!-- Add experience details here -->
+</Layout>

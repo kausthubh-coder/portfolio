@@ -1,0 +1,63 @@
+---
+const techStack = {
+  languages: [
+    { name: "JavaScript", color: "#F7DF1E" },
+    { name: "TypeScript", color: "#3178C6" },
+    { name: "Python", color: "#3776AB" },
+    { name: "Java", color: "#007396" },
+  ],
+  frontend: [
+    { name: "React", color: "#61DAFB" },
+    { name: "Next.js", color: "#000000" },
+    { name: "Astro", color: "#FF5D01" },
+    { name: "Tailwind", color: "#06B6D4" },
+  ],
+  backend: [
+    { name: "Node.js", color: "#339933" },
+    { name: "Express", color: "#000000" },
+    { name: "MongoDB", color: "#47A248" },
+    { name: "PostgreSQL", color: "#4169E1" },
+  ],
+  tools: [
+    { name: "Git", color: "#F05032" },
+    { name: "Docker", color: "#2496ED" },
+    { name: "VS Code", color: "#007ACC" },
+    { name: "Figma", color: "#F24E1E" },
+  ]
+};
+---
+
+<section class="mb-16">
+  <div class="mb-4">
+    <h2 class="text-3xl font-bold">Tech Stack</h2>
+  </div>
+  <div class="space-y-4">
+    {
+      Object.entries(techStack).map(([category, items]) => (
+        <div>
+          <h3 class="text-xl font-semibold capitalize mb-2">{category}</h3>
+          <div class="flex flex-wrap gap-4">
+            {items.map((tech) => (
+              <div class="flex items-center gap-1">
+                <span class="w-6 h-6">
+                  <span class="sr-only">{tech.name} icon</span>
+                  <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                      <path 
+                        fill-rule="evenodd" 
+                        clip-rule="evenodd" 
+                        d="M56.099 6.29187H60.6083L100 74.5193V74.5228L91.5184 88.9822L57.0445 88.9753L60.539 95.0014H59.0186L55.5241 88.9753L12.7625 88.9718H12.7313L10.5425 85.131H7.82723L0.00012207 71.5755L0.00704872 71.5721V71.5686L10.0507 54.1688L19.3428 48.8076L34.7165 22.1781L31.6237 16.8273L39.0318 3.99915H54.776L56.099 6.29187ZM48.3031 27.5532L21.1091 74.5332H47.1463L44.1367 69.3417L72.5048 69.3659L48.3031 27.5532Z" 
+                        fill={tech.color}
+                      />
+                    </g>
+                  </svg>
+                </span>
+                <span>{tech.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

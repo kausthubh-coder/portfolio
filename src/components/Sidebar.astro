@@ -1,0 +1,57 @@
+---
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import TechStack from './TechStack.astro';
+import Chatbot from './Chatbot';
+---
+
+<div class="h-full bg-[var(--bg-dark)] p-4 md:p-6 overflow-y-auto space-y-6">
+  <!-- Profile -->
+  <div class="card">
+    <img
+      src="/IMG20221208192745.jpg"
+      alt="Profile"
+      class="w-32 h-32 rounded-full mx-auto mb-4 border-2 border-[var(--border-color)]"
+    />
+    <h2 class="text-xl font-bold text-center mb-2">Kausthubh Nandimandalam</h2>
+    <p class="text-[var(--text-secondary)] text-center mb-4">📍 North Carolina, USA</p>
+    <p class="text-[var(--text-secondary)] mb-4">
+      18 year old born in India, currently living in the US. like to create stuff, entrepreneurship, and anime.
+    </p>
+    <div class="flex justify-center gap-4">
+      <a href="/resume.pdf" class="tech-badge">
+        Resume
+      </a>
+      <div class="flex gap-2">
+        <a href="#" class="text-[var(--text-secondary)] hover:text-white">
+          <FaGithub className="w-6 h-6" />
+        </a>
+        <a href="#" class="text-[var(--text-secondary)] hover:text-white">
+          <FaLinkedin className="w-6 h-6" />
+        </a>
+        <a href="#" class="text-[var(--text-secondary)] hover:text-white">
+          <FaTwitter className="w-6 h-6" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcut -->
+  <div class="card">
+    <p class="text-sm text-[var(--text-secondary)] text-center">
+      Press <kbd class="px-2 py-1 bg-[var(--bg-dark)] rounded">⌘</kbd> +
+      <kbd class="px-2 py-1 bg-[var(--bg-dark)] rounded">K</kbd> for controls
+    </p>
+  </div>
+
+  <!-- Tech Stack -->
+  <TechStack />
+
+  <!-- Chatbot -->
+  <div class="card">
+    <Chatbot client:load />
+  </div>
+</div>
+
+<style>
+  /* Any sidebar-specific styles... */
+</style>

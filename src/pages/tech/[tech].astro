@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { tech: 'react' } },
+    { params: { tech: 'typescript' } },
+    { params: { tech: 'nodejs' } },
+    { params: { tech: 'python' } },
+  ];
+}
+
+const { tech } = Astro.params;
+
+const projects = {
+  react: [
+    {
+      title: 'nextjs starter kit',
+      description: 'A comprehensive Next.js starter template',
+      date: '2024-01-15',
+    },
+    // Add more React projects
+  ],
+  // Add other tech projects
+};
+
+const techProjects = projects[tech] || [];
+---
+
+<Layout title={`${tech.charAt(0).toUpperCase() + tech.slice(1)} Projects`}>
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-6 capitalize">{tech} Projects</h1>
+    <div class="space-y-6">
+      {techProjects.map((project) => (
+        <div class="card">
+          <h2 class="text-xl font-semibold mb-2">{project.title}</h2>
+          <p class="text-[var(--text-secondary)] mb-2">{project.description}</p>
+          <time class="text-sm text-[var(--text-secondary)]">{project.date}</time>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <Sidebar slot="sidebar" />
+</Layout>

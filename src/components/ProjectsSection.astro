@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const projects = allProjects.filter(project => !project.data.working);
+projects.sort((a, b) => {
+  if (a.data.date instanceof Date && b.data.date instanceof Date) {
+    return b.data.date.getTime() - a.data.date.getTime();
+  }
+  return 0;
+});
+---
+
+<section class="space-y-6">
+  <h2 class="text-2xl font-bold">Projects</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {projects.map((project) => (
+      <a href={`/projects/${project.slug}`} class="card group">
+        <div class="aspect-video rounded-lg overflow-hidden bg-[var(--bg-dark)] mb-4">
+          <img
+            src={project.data.image}
+            alt={project.data.title}
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+          />
+        </div>
+        <h3 class="text-xl font-semibold mb-2">{project.data.title}</h3>
+        <p class="text-[var(--text-secondary)] mb-4">{project.data.description}</p>
+        <div class="flex flex-wrap gap-2">
+          {project.data.tech.map((t) => (
+            <span class="tech-badge">{t}</span>
+          ))}
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

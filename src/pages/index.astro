@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectsSection from '../components/ProjectsSection.astro';
+import ExperiencesSection from '../components/ExperiencesSection.astro';
+import TechStack from '../components/TechStack.astro';
+import CurrentlyCooking from '../components/CurrentlyCooking.astro';
+---
+
+<Layout title="Kausthubh Nandimandalam - Portfolio">
+  <main class="space-y-8">
+    <p class="text-center text-lg">Press <kbd class="px-2 py-1 bg-[var(--bg-dark)] rounded">⌘</kbd> + <kbd class="px-2 py-1 bg-[var(--bg-dark)] rounded">K</kbd> for controls</p>
+    <CurrentlyCooking />
+    <ProjectsSection />
+    <ExperiencesSection />
+    <TechStack />
+  </main>
+</Layout>
