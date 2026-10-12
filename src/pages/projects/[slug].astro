@@ -11,14 +11,14 @@ export async function getStaticPaths() {
     params: { slug: project.slug },
     props: {
       project,
-      previous: projects[(index - 1 + projects.length) % projects.length],
-      next: projects[(index + 1) % projects.length],
+      // Every other project, starting from the one after this, so "next" comes first.
+      moreProjects: [...projects.slice(index + 1), ...projects.slice(0, index)],
     },
   }));
 }
 
-type Props = { project: Project; previous: Project; next: Project };
-const { project, previous, next } = Astro.props;
+type Props = { project: Project; moreProjects: Project[] };
+const { project, moreProjects } = Astro.props;
 const pageTitle = `${project.name}: ${project.description} | ${site.name}`;
 
 // The clip leads the page when there is one, since it shows the product doing
@@ -216,15 +216,20 @@ const [primary, ...secondary] = project.links;
       )
     }
 
-    <nav class="pd-next" aria-label="More projects">
-      <a href={`/projects/${previous.slug}/`}>
-        <small>&larr; previous</small>
-        <span class="pd-next__name"><img src={previous.logoSrc} alt="" width="20" height="20" />{previous.name}</span>
-      </a>
-      <a href={`/projects/${next.slug}/`}>
-        <small>next &rarr;</small>
-        <span class="pd-next__name"><img src={next.logoSrc} alt="" width="20" height="20" />{next.name}</span>
-      </a>
+    <nav class="pd-section pd-more" aria-labelledby="more-title">
+      <h2 id="more-title">more things I've built</h2>
+      <ul>
+        {
+          moreProjects.map((other) => (
+            <li>
+              <a href={`/projects/${other.slug}/`} style={`--tilt: ${other.angle}deg;`}>
+                <img src={other.logoSrc} alt="" width="48" height="48" />
+                <span>{other.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </nav>
 
     <footer class="site-foot">
