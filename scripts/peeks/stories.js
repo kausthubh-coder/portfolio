@@ -61,52 +61,82 @@
       bg: "#141210",
       duration: 7600,
       build(P) {
-        const f = 1120 / 1260;
+        const f = 1120 / 1440;
         P.image(img("kriyan", "01-day.webp"), {
           w: 1120,
-          natural: 1260,
-          kfs: [{ t: 0 }, { t: 4300 }, { t: 4700, o: 0 }, { t: 7100 }, { t: 7600, o: 1 }],
+          natural: 1440,
+          kfs: [{ t: 0 }, { t: 3850 }, { t: 4150, o: 0 }, { t: 7100 }, { t: 7600, o: 1 }],
         });
-        // Quick-add, typed the way you'd say it.
+        // Quick-add, typed the way you'd say it, repeat and all.
         const box = P.el("div", {
           style:
-            "width:560px;height:68px;border-radius:16px;background:#1d1a17;box-shadow:0 0 0 1px #3d3731,0 24px 60px -12px rgba(0,0,0,.7);color:#f4f1ea;font-size:26px;display:flex;align-items:center;gap:14px;padding:0 24px",
+            "width:600px;height:68px;border-radius:16px;background:#1d1a17;box-shadow:0 0 0 1px #3d3731,0 24px 60px -12px rgba(0,0,0,.7);color:#f4f1ea;font-size:26px;display:flex;align-items:center;gap:14px;padding:0 24px",
           html: `<span style="color:#8a837a">+</span><span data-text></span><span data-caret style="width:2px;height:30px;background:#f4f1ea"></span>`,
         });
-        P.typed(box.querySelector("[data-text]"), "essay fri #econ 2h", 900, 70);
+        P.typed(box.querySelector("[data-text]"), "gym every weekday 5pm 1h #life", 800, 50);
         P.fn((t) => {
-          box.querySelector("[data-caret]").style.opacity = Math.floor(t / 400) % 2 && t > 2200 ? "0" : "1";
+          box.querySelector("[data-caret]").style.opacity = Math.floor(t / 400) % 2 && t > 2300 ? "0" : "1";
         });
-        P.anim(box, [{ t: 0, o: 0, x: 280, y: 56, s: 0.97 }, { t: 600 }, { t: 850, o: 1, y: 70, s: 1, e: "out" }, { t: 2700 }, { t: 2900, o: 0, y: 62 }]);
+        P.anim(box, [{ t: 0, o: 0, x: 260, y: 56, s: 0.97 }, { t: 500 }, { t: 750, o: 1, y: 70, s: 1, e: "out" }, { t: 2750 }, { t: 2950, o: 0, y: 62 }]);
         const parsed = P.el("div", {
           style: "display:flex;gap:10px;font-size:20px;color:#d8d2c8",
-          html: ["fri 2 oct", "econ", "2h"]
+          html: ["every weekday", "17:00", "1h", "life"]
             .map((chip) => `<span style="padding:6px 14px;border-radius:999px;background:#2a2622">${chip}</span>`)
             .join(""),
         });
-        P.anim(parsed, [{ t: 0, o: 0, x: 300, y: 160 }, { t: 2200 }, { t: 2400, o: 1, y: 152, e: "out" }, { t: 2700 }, { t: 2900, o: 0 }]);
-        // The task drops onto the timeline at 5pm.
+        P.anim(parsed, [{ t: 0, o: 0, x: 280, y: 160 }, { t: 2300 }, { t: 2500, o: 1, y: 152, e: "out" }, { t: 2750 }, { t: 2950, o: 0 }]);
+        // The task lands on today's timeline at 5pm, and comes back every weekday.
         const block = P.el("div", {
           style:
-            "border-radius:10px;background:#78c0fa;color:#0f1d29;padding:10px 16px;font-size:20px;font-weight:600;overflow:hidden;box-shadow:0 12px 30px -8px rgba(0,0,0,.6)",
-          html: `Econ essay<div style="font-weight:400;font-size:17px;opacity:.75">2h · econ</div>`,
+            "border-radius:10px;background:#6fd68b;color:#0f2416;padding:8px 16px;font-size:18px;font-weight:600;overflow:hidden;white-space:nowrap;box-shadow:0 12px 30px -8px rgba(0,0,0,.6)",
+          html: `Gym <span style="font-weight:400;opacity:.7">every weekday, 17:00 to 18:00</span>`,
         });
         P.anim(block, [
-          { t: 0, o: 0, x: 280, y: 70, w: 560, h: 68 },
-          { t: 2700 },
-          { t: 2800, o: 1 },
-          { t: 3450, x: 422 * f, y: 586 * f, w: 556 * f, h: 104 * f, e: "inOut" },
-          { t: 4300 },
-          { t: 4700, o: 0 },
+          { t: 0, o: 0, x: 260, y: 70, w: 600, h: 68 },
+          { t: 2750 },
+          { t: 2850, o: 1 },
+          { t: 3450, x: 492 * f, y: 525 * f, w: 560 * f, h: 50 * f, e: "inOut" },
+          { t: 3850 },
+          { t: 4150, o: 0 },
         ]);
-        P.image(img("kriyan", "02-goals.webp"), {
+        // Open a task and pick the days it repeats on.
+        P.cursor(
+          [{ t: 0, x: 700, y: 640, o: 0 }, { t: 3000, o: 0 }, { t: 3200, o: 1 }, { t: 3700, x: 780 * f, y: 238 * f }, { t: 4000 }, { t: 4200, o: 0 }],
+          [3780],
+        );
+        // Zoom in on the repeat row, keeping the panel's right edge where it is.
+        const z = 1.3;
+        const fx = 1120;
+        const fy = 560 * f;
+        P.image(img("kriyan", "02-repeat.webp"), {
+          w: 1120,
+          natural: 1440,
+          kfs: [
+            { t: 0, o: 0 },
+            { t: 3800 },
+            { t: 4100, o: 1, e: "out" },
+            { t: 4400 },
+            { t: 5150, s: z, x: fx - z * fx, y: fy - z * fy },
+            { t: 5500 },
+            { t: 5850, o: 0 },
+          ],
+        });
+        const ring = (w, h, kfs) => P.anim(P.el("div", { style: `width:${w}px;height:${h}px;border-radius:12px;box-shadow:0 0 0 3px #f2bd5c` }), kfs);
+        const zx = (nx) => fx - z * fx + z * nx * f;
+        const zy = (ny) => fy - z * fy + z * ny * f;
+        // Mon through Wed, in the zoomed-in frame.
+        ring(z * 158 * f, z * 42 * f, [{ t: 0, o: 0, x: zx(1160), y: zy(602) }, { t: 5150 }, { t: 5300, o: 1, e: "out" }, { t: 5600 }, { t: 5800, o: 0 }]);
+        // The week, with the overbooked day called out.
+        const g = 1120 / 1180;
+        P.image(img("kriyan", "03-week.webp"), {
           w: 1120,
           natural: 1180,
-          kfs: [{ t: 0, o: 0, y: 24 }, { t: 4400 }, { t: 4800, o: 1, y: 0, e: "out" }, { t: 7100 }, { t: 7500, o: 0 }],
+          kfs: [{ t: 0, o: 0, y: 20 }, { t: 5550 }, { t: 5950, o: 1, y: 0, e: "out" }, { t: 7100 }, { t: 7500, o: 0 }],
         });
-        P.caption("type a task the way you'd say it", 300, 2800);
-        P.caption("it lands on your day", 3000, 4500);
-        P.caption("and goals show if you're on pace", 4900, 7400);
+        ring(156 * g, 46 * g, [{ t: 0, o: 0, x: 512 * g, y: 95 * g }, { t: 6150 }, { t: 6350, o: 1, e: "out" }, { t: 7000 }, { t: 7200, o: 0 }]);
+        P.caption("type it the way you'd say it, repeats too", 300, 3500);
+        P.caption("open a task to pick the days it repeats", 3700, 5650);
+        P.caption("and the week tells you when you're overbooked", 5950, 7400);
       },
     },
 
@@ -176,61 +206,93 @@
             "width:800px;height:400px;border-radius:20px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 30px 70px -20px rgba(0,0,0,.3);padding:22px 30px;font-size:24px;color:#171717",
           html: `<div style="display:flex;gap:8px;margin-bottom:26px"><i style="width:13px;height:13px;border-radius:50%;background:#e5e5e5"></i><i style="width:13px;height:13px;border-radius:50%;background:#e5e5e5"></i><i style="width:13px;height:13px;border-radius:50%;background:#e5e5e5"></i></div>
             <div style="color:#737373;font-size:19px">sam</div><div style="margin:4px 0 22px">standup in 5?</div>
-            <div style="position:absolute;left:30px;right:30px;bottom:26px;min-height:76px;border-radius:14px;box-shadow:0 0 0 2px #e5e5e5;display:flex;align-items:center;padding:0 22px">
-              <span data-placeholder style="color:#a3a3a3">message #general</span><span data-msg></span><span data-caret style="width:2px;height:30px;margin-left:2px;background:#171717"></span>
+            <div style="position:absolute;left:30px;right:30px;bottom:26px;min-height:76px;border-radius:14px;box-shadow:0 0 0 2px #e5e5e5;display:flex;align-items:center;padding:0 22px;white-space:pre">
+              <span data-placeholder style="color:#a3a3a3">message #general</span><span data-msg></span><span data-more></span><span data-caret style="width:2px;height:30px;margin-left:2px;background:#171717"></span>
             </div>`,
         });
         P.anim(win, [{ t: 0, x: 160, y: 60 }]);
         const msg = win.querySelector("[data-msg]");
-        P.typed(msg, "running 5 min late, start without me", 3600, 45);
+        const more = win.querySelector("[data-more]");
+        // Held: the first half lands on let go. Hands-free: the rest lands once it goes quiet.
+        P.typed(msg, "running 5 min late,", 2450, 40);
+        P.typed(more, " start without me", 5450, 40);
         P.fn((t) => {
           win.querySelector("[data-placeholder]").style.display = msg.textContent ? "none" : "";
           win.querySelector("[data-caret]").style.opacity = Math.floor(t / 450) % 2 ? "0" : "1";
-          msg.style.opacity = t > 7300 ? String(Math.max(0, 1 - (t - 7300) / 250)) : "1";
+          const fade = t > 7300 ? String(Math.max(0, 1 - (t - 7300) / 250)) : "1";
+          msg.style.opacity = fade;
+          more.style.opacity = fade;
         });
-        // Ctrl + Space, held while you talk.
+        // Ctrl + Space: held while you talk, then tapped once for hands-free.
         const keys = P.el("div", {
           style: "display:flex;align-items:center;gap:14px;font-size:24px;color:#404040",
           html: `<span data-key style="width:110px;height:68px;display:grid;place-items:center;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 5px 0 #c9c9c9">ctrl</span>+<span data-key style="width:190px;height:68px;display:grid;place-items:center;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 5px 0 #c9c9c9">space</span>`,
         });
         P.fn((t) => {
-          const down = t > 650 && t < 3300;
+          const down = (t > 600 && t < 2300) || (t > 3750 && t < 3920);
           keys.querySelectorAll("[data-key]").forEach((key) => {
             key.style.transform = down ? "translateY(4px)" : "";
             key.style.boxShadow = down ? "0 0 0 1px rgba(0,0,0,.08),0 1px 0 #c9c9c9" : "0 0 0 1px rgba(0,0,0,.08),0 5px 0 #c9c9c9";
             key.style.background = down ? "#f4f4f4" : "#fff";
           });
         });
-        P.anim(keys, [{ t: 0, o: 0, x: 60, y: 520 }, { t: 300, o: 1, y: 500, e: "out" }, { t: 3500 }, { t: 3800, o: 0, y: 510 }]);
-        // The pill, listening.
+        P.anim(keys, [{ t: 0, o: 0, x: 60, y: 520 }, { t: 300, o: 1, y: 500, e: "out" }, { t: 4100 }, { t: 4400, o: 0, y: 510 }]);
+        // The pill: listening, then counting down the quiet before it stops by itself.
         const bars = Array.from({ length: 7 }, () => `<i style="width:9px;border-radius:5px;background:#f2a07c"></i>`).join("");
+        const C = 2 * Math.PI * 17;
         const pill = P.el("div", {
           style:
             "width:230px;height:70px;border-radius:999px;background:#15161c;box-shadow:0 0 0 1px #2c2d36,0 18px 40px -10px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;gap:8px",
-          html: bars,
+          html: `${bars}<span data-count style="position:relative;width:42px;height:42px;margin-left:12px;place-items:center;color:#fafafa;font-size:19px;font-weight:600">
+              <svg width="42" height="42" viewBox="0 0 42 42" style="position:absolute;inset:0;transform:rotate(-90deg)"><circle cx="21" cy="21" r="17" fill="none" stroke="#2c2d36" stroke-width="3"/><circle data-arc cx="21" cy="21" r="17" fill="none" stroke="#f2a07c" stroke-width="3" stroke-linecap="round" stroke-dasharray="${C}"/></svg><b data-n style="position:relative;font-weight:600"></b></span>`,
         });
+        const count = pill.querySelector("[data-count]");
         P.fn((t) => {
-          const live = t > 900 && t < 3300 ? 1 : 0.15;
+          const talking = (t > 800 && t < 2300) || (t > 4000 && t < 4600);
           pill.querySelectorAll("i").forEach((bar, i) => {
             const wave = Math.abs(Math.sin(t / 110 + i * 1.3) * Math.cos(t / 260 + i));
-            bar.style.height = `${10 + 32 * wave * live}px`;
+            bar.style.height = `${10 + 32 * wave * (talking ? 1 : 0.12)}px`;
           });
+          // Quiet from 4600: the countdown, sped up for the clip.
+          const q = P.clamp((t - 4650) / 750);
+          const counting = t > 4600 && t < 5500;
+          count.style.display = counting ? "grid" : "none";
+          pill.style.width = counting ? "292px" : "230px";
+          pill.querySelector("[data-arc]").style.strokeDashoffset = String(C * q);
+          pill.querySelector("[data-n]").textContent = String(Math.max(1, 3 - Math.floor(q * 3)));
         });
-        P.anim(pill, [{ t: 0, o: 0, x: 445, y: 530, s: 0.9 }, { t: 700 }, { t: 950, o: 1, y: 500, s: 1, e: "out" }, { t: 3300 }, { t: 3550, o: 0, y: 510, s: 0.9 }]);
-        const stats = P.el("div", {
-          style:
-            "width:600px;padding:34px 40px;border-radius:24px;background:#15161c;color:#fafafa;display:flex;justify-content:space-between;box-shadow:0 30px 70px -16px rgba(0,0,0,.5)",
-          html: [
-            ["2 MB", "while it waits"],
-            ["13 MB", "while you talk"],
-          ]
-            .map(([n, l]) => `<div><div style="font-size:64px;font-weight:720;letter-spacing:-.02em">${n}</div><div style="font-size:22px;color:#f2a07c">${l}</div></div>`)
-            .join(""),
+        P.anim(pill, [
+          { t: 0, o: 0, x: 445, y: 530, s: 0.9 },
+          { t: 650 },
+          { t: 900, o: 1, y: 500, s: 1, e: "out" },
+          { t: 2300 },
+          { t: 2550, o: 0, y: 510, s: 0.9 },
+          { t: 3850, y: 530 },
+          { t: 4100, o: 1, y: 500, s: 1, e: "out" },
+          { t: 4600 },
+          { t: 4601, x: 414 },
+          { t: 5400 },
+          { t: 5600, o: 0, y: 510, s: 0.9 },
+        ]);
+        // Or skip the keyboard: a mouse button works too.
+        const pw = 780;
+        const pf = pw / 1440;
+        P.image(img("likh", "settings-general.webp"), {
+          w: pw,
+          natural: 1440,
+          style: "border-radius:22px;box-shadow:0 30px 70px -16px rgba(0,0,0,.55)",
+          kfs: [{ t: 0, o: 0, x: 170, y: 46, s: 0.97 }, { t: 5850 }, { t: 6200, o: 1, y: 22, s: 1, e: "out" }, { t: 7100 }, { t: 7400, o: 0 }],
         });
-        P.anim(stats, [{ t: 0, o: 0, x: 260, y: 170, s: 0.96 }, { t: 5500 }, { t: 5800, o: 1, y: 150, s: 1, e: "out" }, { t: 7100 }, { t: 7400, o: 0 }]);
-        P.caption("hold ctrl + space and talk", 300, 3400);
-        P.caption("let go, and it types for you", 3600, 5500);
-        P.caption("and it barely uses anything", 5800, 7400);
+        P.anim(P.el("div", { style: `width:${516 * pf}px;height:${74 * pf}px;border-radius:12px;box-shadow:0 0 0 3px #f2a07c` }), [
+          { t: 0, o: 0, x: 170 + 428 * pf, y: 22 + 486 * pf },
+          { t: 6400 },
+          { t: 6600, o: 1, e: "out" },
+          { t: 7000 },
+          { t: 7200, o: 0 },
+        ]);
+        P.caption("hold ctrl + space, talk, and let go", 300, 3500);
+        P.caption("or tap once, and it stops when you go quiet", 3700, 5950);
+        P.caption("a mouse button works too", 6150, 7400);
       },
     },
 

@@ -7,14 +7,20 @@ angle: -6
 description: does your homework on your school's site while you watch
 platforms: windows and mac
 summary: >-
-  studi is a desktop app with a little agent in it called inky. inky signs into your school portal through your own
-  browser, finds what's due, reads the instructions and rubrics, and works on the actual assignment page in front of
-  you. you can take over whenever you want, and it stops before submit, so you're the one who hands it in.
+  studi is a desktop app with a little agent in it called inky. you sign into your school portal in a browser inside
+  the app, and inky finds what's due, reads the instructions and rubrics, and works on the actual assignment page in
+  front of you. you can take over whenever you want, and by default it stops before submit, so you're the one who
+  hands it in.
 links:
-  - label: join the beta
+  - label: join the waitlist
     href: https://getstudi.com/
+  - label: changelog
+    href: https://getstudi.com/changelog
   - label: github
     href: https://github.com/kausthubh-coder/inky
+numbers:
+  - value: "11"
+    label: beta releases in september
 previews:
   - src: ./studi/01-week.webp
     alt: Studi week view with this week's assignments laid out by day and Inky at the top
@@ -23,21 +29,21 @@ previews:
   - src: ./studi/02-assignment.webp
     alt: An assignment open in Studi, with the school page on the left and Inky's notes on the right
     title: an assignment
-    caption: the school page on the left, inky's work and a chat on the right. drafts get saved, never submitted.
+    caption: the school page on the left, inky's work and a chat on the right. drafts get saved, not submitted.
   - src: ./studi/03-school-check.webp
     alt: Studi school check saying you're all caught up
     title: school check
     caption: a scan of every class, so nothing new slips past you.
 features:
   - title: finds what's due
-    body: it checks your classes through your own signed-in school browser, reads PDF instructions and rubrics, and lays out your week.
+    body: it checks your classes through your own signed-in school browser, downloads and reads PDF instructions and rubrics, and lays out your week with exact deadlines. work that's already submitted or locked gets left alone.
   - title: works where you can see it
-    body: the homework happens on the school page in front of you. take over whenever you want, and it never hits submit for you.
+    body: the homework happens on the school page in front of you. take over whenever you want. it stops before submit unless you set a rule that lets it.
   - title: a tutor, coming next
     body: short lessons from your syllabus or a topic you pick, with marked answers, for when you'd rather learn the thing.
 story:
   - AI homework tools usually make you paste your schoolwork into a box and hope. I wanted the page to stay in front of you, so you see what the agent sees and watch what it writes.
-  - your classes, drafts and memory live on your computer, not in someone's cloud. and you're still the one who submits.
+  - your classes, drafts and memory live on your computer, not in someone's cloud. and unless you say otherwise, you're still the one who submits.
 stack:
   - name: Electron
     icon: siElectron
@@ -50,14 +56,18 @@ stack:
     why: tasks, drafts and memory stay local.
   - name: Convex
     icon: siConvex
-    why: accounts, beta access and the waitlist.
+    why: accounts, beta access, usage and the waitlist.
   - name: Clerk
     icon: siClerk
-    why: sign-in on desktop.
+    why: sign-in on the site and in the desktop app.
+  - name: Pi
+    why: the agent runtime. inky runs on your own ChatGPT account, connected with a device code.
+  - name: Composio
+    why: optional connected apps like Gmail, Google Drive and Notion.
 architecture:
   - title: your browser, not ours
     body: the school page runs in a browser view inside the app, signed in as you. the agent drives that page with browser tools, and you can take it back mid-step.
   - title: local first
-    body: tasks, drafts and the agent's memory are SQLite and markdown on your disk. the server only knows who you are and whether you're in the beta.
-  - title: signed builds on every tag
-    body: Electron Forge and GitHub Actions ship signed windows and mac builds, so updates are boring.
+    body: tasks, drafts and the agent's memory are SQLite and markdown on your disk, and each assignment gets its own folder inside one you pick. the server only knows who you are, whether you're in the beta, your usage and which apps you've connected.
+  - title: a build on every tag
+    body: GitHub Actions runs the tests on windows and mac, then Electron Forge ships a windows installer and a universal mac app. windows updates itself, and mac downloads the new one.
