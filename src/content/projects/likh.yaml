@@ -4,49 +4,61 @@ year: 2026
 status: live
 logo: ./likh/logo.png
 angle: -4
-description: native dictation for windows that idles at 2 MB
+description: native dictation for windows that idles at 14 MB
 platforms: windows, mac in alpha
 license: MIT
 summary: >-
   likh is a dictation app. hold ctrl + space, talk, let go, and the words paste wherever you're typing. it
   transcribes with the ChatGPT plan you already have through the Codex sign-in, so there's no API key and nothing
-  extra to pay. it's fully native, with voice commands, history and hands-free mode.
+  extra to pay, or with a free Groq key if you'd rather. it's fully native and lives in the tray, with voice commands,
+  history, hands-free mode and updates from GitHub releases.
 links:
   - label: download likh
     href: https://getlikh.vercel.app/
   - label: github
     href: https://github.com/kausthubh-coder/likh
 numbers:
-  - value: 2 MB
+  - value: 14 MB
     label: memory while it waits
-  - value: 13 MB
-    label: memory while you talk
-  - value: ~0%
-    label: CPU and GPU at idle
+  - value: 0%
+    label: CPU while it waits
+  - value: 4.9 MB
+    label: the whole download
 previews:
   - src: ./likh/settings-general.webp
-    alt: Likh settings showing the Ctrl plus Space shortcut and three ways to start recording
+    alt: Likh general settings with the Ctrl plus Space shortcut, a mouse button option and three ways to start recording
     title: settings
-    caption: pick the shortcut and how it starts. hold, tap for hands-free, or tap to toggle.
+    caption: pick the shortcut or a mouse button, and how it starts. hold, tap for hands-free, or tap to toggle.
   - src: ./likh/onboarding-welcome.webp
     alt: Likh welcome screen reading Talk. It types.
     title: first run
     caption: a short setup and you're dictating.
     mobile: true
+  - src: ./likh/settings-commands.webp
+    alt: Likh commands settings with spoken commands for lines and lists, pressing a key and taking it back
+    title: commands
+    caption: say "new bullet" or "press enter", or "scratch that" to take it back.
+  - src: ./likh/settings-groq.webp
+    alt: Likh transcription settings choosing between ChatGPT through Codex and a free Groq key
+    title: transcription
+    caption: your ChatGPT plan through Codex, or a free Groq key.
   - src: ./likh/settings-history.webp
     alt: Likh history list of recent dictations
     title: history
     caption: everything you said stays on your machine, so you can grab it again later.
 features:
   - title: hold, talk, let go
-    body: a system-wide shortcut records you, transcribes it, and pastes at your cursor in any app.
+    body: a system-wide shortcut or a mouse button records you, transcribes it, and pastes at your cursor in any app.
+  - title: tap for hands-free
+    body: tap once and keep talking. it stops by itself after a few seconds of quiet, and the pill counts it down.
   - title: voice commands
-    body: say "new line", "press enter" or "scratch that" while you dictate.
+    body: say "new line", "new bullet", "press enter" or "scratch that" while you dictate.
   - title: built to sit there all day
     body: it draws on the CPU with no browser engine inside, so leaving it running costs you nothing.
 story:
   - I wanted dictation that's instant, reliable, and free to leave running. the ones I tried sat at hundreds of MB doing nothing.
   - likh reuses the ChatGPT plan I already pay for, so there's no key to paste. early tests had the GPU renderer idling at over 200 MB, so the GPU went, and so did the fancy glass.
+  - I tried windows' built-in speech as a free option too. it didn't work for me in practice, so it came out the same day. a free Groq key stayed.
 stack:
   - name: Rust
     icon: siRust
@@ -58,4 +70,12 @@ stack:
     why: its own global hotkey and the little pill on screen while you talk.
   - name: OpenAI
     why: transcription through the Codex sign-in, on the plan you already have.
-architecture: []
+  - name: Groq
+    why: the free option. Whisper with your own key, kept in the OS credential store.
+architecture:
+  - title: the pill is its own window
+    body: iced's software renderer can't make a transparent window that never takes focus, so the pill is a layered Win32 window drawn with tiny-skia.
+  - title: a shortcut that can't die
+    body: windows quietly drops low-level keyboard hooks that answer slowly, so the shortcut is a system hotkey, and letting go is only checked while it's held.
+  - title: signed updates, never on a timer
+    body: it checks GitHub releases at launch and after a dictation, once a day, and keeps a downloaded installer only if its Ed25519 signature matches the key built into likh.

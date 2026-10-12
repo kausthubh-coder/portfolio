@@ -4,13 +4,13 @@ year: 2026
 status: live
 logo: ./kriyan/logo.png
 angle: 5
-description: open-source day planner your AI can read and plan in
+description: open-source planner that lets the AI you already use plan with you
 platforms: web, android, CLI and MCP
 license: MIT
 summary: >-
   kriyan is a planner that's mostly a timeline. timed tasks sit on the day, everything else waits in a tray beside
-  it, and length is optional. it has an MCP server, so Claude or any other AI client can read your tasks and plan
-  with you. it's free, and the demo doesn't need an account.
+  it, and length is optional. it has an MCP server that can do anything the app can, so Claude or any other AI
+  client can plan with you. it's free, and the demo doesn't need an account.
 links:
   - label: try the demo
     href: https://kriyan.app/demo
@@ -27,25 +27,35 @@ numbers:
     label: sign-ups to try it
 previews:
   - src: ./kriyan/01-day.webp
-    alt: Kriyan day view with a task tray, a timeline, and deadlines and goals on the side
+    alt: Kriyan day view with a task tray, a timeline, and the week, deadlines and goals on the side
     title: the day
-    caption: tray on the left, timeline in the middle, deadlines and goals on the right.
-  - src: ./kriyan/02-goals.webp
+    caption: tray on the left, timeline in the middle, the week, deadlines and goals on the right.
+  - src: ./kriyan/02-repeat.webp
+    alt: Kriyan task panel with repeat set to every week on Monday and Wednesday, and reminders below
+    title: repeats
+    caption: open a task to set how it repeats and when it reminds you.
+  - src: ./kriyan/03-week.webp
+    alt: Kriyan week view with Thursday marked 6h 50m, over capacity
+    title: the week
+    caption: the week flags a day that has more work than hours.
+  - src: ./kriyan/04-goals.webp
     alt: Kriyan goals view with pace markers
     title: goals
     caption: goals show where you should be today, not just a percentage.
-  - src: ./kriyan/03-android.webp
-    alt: Kriyan Android app showing the day timeline
+  - src: ./kriyan/05-android.webp
+    alt: Kriyan Android app showing the day with a task tray
     title: android
     caption: the same day on your phone.
     mobile: true
 features:
   - title: your day on one timeline
-    body: drag to schedule or resize. tasks without a time wait in the tray until you're ready for them.
+    body: drag to schedule or resize. tasks without a time wait in the tray, and the week shows when you're overbooked.
   - title: type it like you'd say it
-    body: 'quick-add turns "essay fri #econ 2h" into a day, an area and a length.'
+    body: 'quick-add turns "essay fri #econ 2h" into a day, an area and a length. it reads repeats and reminders too.'
+  - title: repeats and reminders
+    body: repeat every weekday, monthly on the 2nd tuesday, or 3 days after it's done. reminders can count back from a deadline, and reach your phone even if your AI added the task.
   - title: plan with the AI you already use
-    body: the MCP server lets Claude and other clients read and plan your tasks. goals show pace, and the week shows when you're overbooked.
+    body: the MCP server can do anything the app can. ask your AI to organise your life and it sets up areas, deadlines and goals, after showing you the plan.
 story:
   - I wanted a planner that's mostly a timeline, where length is optional, and where the AI I already talk to can plan with me instead of being one more app to open.
   - so it's one backend with four ways in, and it's open source, so your data stays yours.
@@ -58,7 +68,7 @@ stack:
     why: one live backend shared by every surface.
   - name: Clerk
     icon: siClerk
-    why: one sign-in across web, android and MCP.
+    why: one sign-in across web, android, the CLI and MCP.
   - name: Expo
     icon: siExpo
     why: the android app, shipped as an APK.
@@ -67,6 +77,8 @@ stack:
     why: how your AI gets to your tasks.
 architecture:
   - title: one parser everywhere
-    body: a shared core package holds the quick-add parser and date logic with no React, so every surface reads "fri 2h" the same way.
+    body: a shared core package holds the quick-add parser, dates and repeat rules with no React, so every surface reads "fri 2h" or "every weekday" the same way.
   - title: one backend, four ways in
     body: web, android, the CLI and the MCP server all call the same Convex functions, so a task Claude adds shows up on your phone right away.
+  - title: a whole plan in one go
+    body: apply_plan saves classes, tasks and goals in one Convex transaction and skips what's already there, so running it again never duplicates anything.

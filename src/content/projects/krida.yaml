@@ -4,17 +4,15 @@ year: 2026
 status: building
 logo: ./krida/logo.png
 angle: 6
-description: watch movies and shows with friends, in sync
-platforms: web, more coming
+description: watch movies, shows and anime with friends, in sync
+platforms: web, on desktop and phone
 summary: >-
-  krida is a streaming app built around watching together. a party keeps everyone's play, pause and seek in sync,
-  waits for whoever is buffering, and has a shared queue and chat. it's on the web today. next it goes
-  cross-platform, with plugins and a way to publish your own stuff.
+  krida is a private streaming app for me and a friend, built around watching together. a party keeps everyone's
+  play, pause and seek in sync, waits for whoever is buffering, and has a shared queue and chat. it runs in the
+  browser, on a laptop or a phone.
 links:
   - label: open krida
     href: https://krida-tv.vercel.app/
-  - label: github
-    href: https://github.com/kausthubh-coder/krida
 previews:
   - src: ./krida/01-home.webp
     alt: Krida home screen with a featured title, a watch party prompt and a row of top picks
@@ -34,21 +32,27 @@ previews:
     caption: movies and shows in one place.
 features:
   - title: watch parties that stay in sync
-    body: play, pause and seek land for everyone. the party waits for whoever is buffering, with a shared queue, chat, reactions and a soundboard.
+    body: play, pause and seek land for everyone. the party waits for whoever is buffering, with a shared queue, chat and meme sound reactions. a friend without a profile can join from a one-use link.
   - title: picks from your taste
-    body: recommendations come from what you watch and rate, and every title shows IMDb, Rotten Tomatoes, Metacritic and Letterboxd scores.
+    body: recommendations come from what you watch, save and rate, plus your Simkl history if you connect it. every title shows IMDb, Rotten Tomatoes, Metacritic and Letterboxd scores.
   - title: a player that gets out of the way
-    body: skip the intro, recap and credits, see what's up next, and switch episodes without leaving the player.
+    body: skip the recap and intro in one go, jump past the credits to what's up next, and switch episodes without leaving the player.
+  - title: a library that's yours
+    body: plan to watch, watching, watched and to rate, with stats and a wrapped. it syncs both ways with Simkl, and private mode keeps what you watch off your friend's home.
 story:
   - I wanted one place for a friend and me to pick something and actually watch it together, without counting down "3, 2, 1, play" over a call.
-  - most of the time goes to the player, so most of the effort did too. next is the bigger version, on par with Nuvio but with party sync built in, apps on every platform, and plugins.
+  - Convex ended up reading about three times what its free plan allows, mostly copies of the same public data. so I moved everything that's the same for everyone onto Vercel and kept each profile's data in the browser.
+  - most of the time goes to the player, so most of the effort did too. next is the bigger version, with party sync built in, apps on every platform, and plugins.
 stack:
   - name: React
     icon: siReact
     why: React 19 with Vite keeps it quick to load and quick to work on.
   - name: Convex
     icon: siConvex
-    why: rooms, chat and playback state sync live without a server of my own.
+    why: profiles, parties, chat and each profile's own data sync live without a server of my own.
+  - name: Vercel
+    icon: siVercel
+    why: search, ratings, home rows and picks run as functions behind its cache, so public data never touches the database.
   - name: hls.js
     why: adaptive streaming in the browser, with the player under my control.
   - name: Tailwind CSS
@@ -56,9 +60,11 @@ stack:
     why: fast to style, with the tokens in one place.
   - name: TMDB
     icon: siThemoviedatabase
-    why: titles, art and episodes, with ratings from MDBList on top.
+    why: search, art, trending and similar titles, with ratings from MDBList on top.
 architecture:
   - title: one clock for the room
     body: the party keeps a single playback state on the server. each player follows it, and nobody resumes until everyone has buffered.
   - title: one title, one id
-    body: movies and shows from different sources are matched to one id, so history, ratings and the queue agree about what you watched.
+    body: an anime has an IMDb id and a Kitsu id. krida treats them as one title, so a save, a rating or a status lands once and nothing shows up twice.
+  - title: only what changed
+    body: each profile's library, ratings and progress live in a copy in the browser. Convex sends only the rows that changed, and picks are worked out from that copy, then scored on Vercel.

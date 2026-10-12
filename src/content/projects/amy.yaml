@@ -6,16 +6,23 @@ logo: ./amy/logo.png
 angle: 7
 description: android calorie tracker where you just type what you ate
 platforms: android
-license: GPL-3.0
+license: GPL-3.0-or-later
 summary: >-
   amy is a calorie tracker built on something you already do, writing a list. each line becomes an entry with
   calories and macros you can still edit. AI estimates are there if you bring your own key, but you don't need one:
-  type "latte 190 cal" and amy remembers it next time. no account, and the diary stays on your phone.
+  type "latte 190 cal" and amy remembers it next time. no account, no ads, and the diary stays on your phone.
 links:
   - label: get amy
     href: https://openamy.app/
   - label: github
     href: https://github.com/kausthubh-coder/amy
+  - label: latest apk
+    href: https://github.com/kausthubh-coder/amy/releases/latest
+numbers:
+  - value: "10"
+    label: releases since june
+  - value: "0"
+    label: accounts, ads or tracking SDKs
 previews:
   - src: ./amy/01-line.webp
     alt: Amy today screen with the line two eggs toast estimated at 390 calories
@@ -36,18 +43,21 @@ features:
   - title: one food per line
     body: type a line, press enter, and it turns into calories and macros you can still edit.
   - title: lots of ways in
-    body: dictation, food photos and nutrition labels with your own OpenRouter key, barcodes through Open Food Facts, and saved meals.
+    body: dictation, food photos and nutrition labels with your own OpenRouter key, barcodes through Open Food Facts with serving or gram portions, and saved meals.
   - title: stats, streaks and widgets
-    body: weekly charts, streaks, and two home-screen widgets that open straight into logging.
+    body: weekly charts, streaks, weight logs, and two home-screen widgets that open straight into logging.
+  - title: honest estimates
+    body: each estimate shows what it assumed and how sure it is, shaky ones get a ~, and a failed one shows retry instead of a made-up number.
 story:
   - most calorie apps make logging feel like data entry. search, tap, confirm, fix the serving, dismiss an upsell, repeat.
   - amy starts from writing a list. the note stays readable, every number stays editable, and nothing pretends an estimate is exact.
+  - the latest round was about trust. the diary saves by month and opens a recovery screen instead of overwriting anything it can't read, and with no key amy shows "+ cal" instead of guessing. next is getting it on IzzyOnDroid.
 stack:
   - name: Expo
     icon: siExpo
-    why: one android-first codebase for the camera, speech and widgets.
+    why: one android-first codebase for the camera, speech and widgets, and EAS builds the signed apk.
   - name: AsyncStorage
-    why: the diary stays on the device, with no account and a JSON export.
+    why: the diary stays on the device, split by month, with JSON export and import.
   - name: Open Food Facts
     why: open barcode data with no lock-in.
   - name: OpenRouter
@@ -56,7 +66,11 @@ stack:
 architecture:
   - title: one local source of truth
     body: a typed store owns entries, goals, saved meals and settings, and every screen reads and writes the same model.
+  - title: saved a month at a time
+    body: each month is its own row and the index is written last, so a crash mid-save never points at missing data. anything unreadable gets quarantined, not deleted.
   - title: everything becomes a draft first
     body: typed lines, AI estimates, barcode results and saved meals all turn into the same draft shape before they hit the diary.
+  - title: your numbers before the model
+    body: corrected foods and saved meals match locally first, quantities included. what's left goes out as one OpenRouter request with a strict JSON schema, timeouts and fallbacks.
   - title: widgets from config
     body: an Expo config plugin writes the native android widgets, and the app pushes them a small snapshot after each change.
