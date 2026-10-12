@@ -1,0 +1,50 @@
+<button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme">
+  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <mask id="theme-toggle-mask">
+      <rect x="-4" y="-4" width="24" height="24" fill="white"></rect>
+      <circle class="theme-toggle__bite" cx="19" cy="-3" r="5.5" fill="black"></circle>
+    </mask>
+    <circle cx="8" cy="8" r="4.5" fill="currentColor" mask="url(#theme-toggle-mask)"></circle>
+    <g class="theme-toggle__rays" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M8 0.5v1.2M8 14.3v1.2M0.5 8h1.2M14.3 8h1.2M2.7 2.7l.85.85M12.45 12.45l.85.85M2.7 13.3l.85-.85M12.45 3.55l.85-.85"
+      ></path>
+    </g>
+  </svg>
+</button>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector("[data-theme-toggle]");
+    if (!button) return;
+    const root = document.documentElement;
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+    const current = () => root.dataset.theme || (systemDark.matches ? "dark" : "light");
+    const label = () => button.setAttribute("aria-label", `Switch to ${current() === "dark" ? "light" : "dark"} theme`);
+    label();
+    systemDark.addEventListener("change", label);
+
+    button.addEventListener("click", () => {
+      const next = current() === "dark" ? "light" : "dark";
+      const apply = () => {
+        root.dataset.theme = next;
+        try {
+          localStorage.setItem("kausthubh:theme", next);
+        } catch {}
+        label();
+      };
+
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!document.startViewTransition || reduced) return apply();
+
+      // The new palette spreads out from the button that asked for it.
+      const rect = button.getBoundingClientRect();
+      root.style.setProperty("--wipe-x", `${rect.left + rect.width / 2}px`);
+      root.style.setProperty("--wipe-y", `${rect.top + rect.height / 2}px`);
+      try {
+        document.startViewTransition({ update: apply, types: ["theme"] });
+      } catch {
+        document.startViewTransition(apply);
+      }
+    });
+  })();
+</script>

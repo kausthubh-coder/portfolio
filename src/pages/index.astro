@@ -1,83 +1,312 @@
 ---
-import { siGithub, siInstagram, siX, siYoutube } from "simple-icons";
+import { siClaude, siConvex, siGithub, siGmail, siInstagram, siNextdotjs, siVercel, siX, siYoutube } from "simple-icons";
 import IntroSequence from "../components/IntroSequence.astro";
-import ProjectStack from "../components/ProjectStack.astro";
-import { emailHref } from "../data/site";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { emailHref, site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getProjects, morphName } from "../lib/projects";
+
+const projects = await getProjects();
 
 const socials = [
-  { label: "GitHub", href: "https://github.com/kausthubh-coder", icon: siGithub },
-  { label: "X", href: "https://x.com/KausthubhOS", icon: siX },
-  { label: "Instagram", href: "https://instagram.com/kausthubh2", icon: siInstagram },
-  { label: "YouTube", href: "https://www.youtube.com/@bluez6812", icon: siYoutube },
+  { label: "x", handle: "@KausthubhOS", href: "https://x.com/KausthubhOS", icon: siX },
+  { label: "github", handle: "kausthubh-coder", href: "https://github.com/kausthubh-coder", icon: siGithub },
+  { label: "instagram", handle: "@kausthubh2", href: "https://instagram.com/kausthubh2", icon: siInstagram },
+  { label: "youtube", handle: "@bluez6812", href: "https://www.youtube.com/@bluez6812", icon: siYoutube },
 ];
+
+// The little deck on the workflow card: a few of the tools behind every project.
+const deck = [siClaude, siConvex, siNextdotjs, siVercel];
+// The chips on the skills card, a few real ones from the library.
+const skills = ["/optimize", "/init-project", "critly"];
 ---
 
 <BaseLayout introBoot>
-  <main class="mockup-shell">
-    <section class="mockup-panel" aria-labelledby="intro-heading">
-      <div class="identity-row">
-        <a href="/" class="identity-mark" aria-label="Home">
-          <img
-            class="identity-mark__image"
-            src="/logo.webp"
-            alt=""
-            width="72"
-            height="72"
-            fetchpriority="high"
-            decoding="async"
-          />
+  <main class="page home">
+    <header class="identity-row">
+      <a href="/" class="identity-mark" aria-label="Home">
+        <img class="identity-mark__image" src="/logo.webp" alt="" width="64" height="64" fetchpriority="high" />
+      </a>
+      <h1 class="identity-name" aria-label="Kausthubh N">
+        <span class="identity-name__word">Kausthubh</span><span class="identity-name__dot">.</span><span
+          class="identity-name__last">N</span
+        >
+      </h1>
+    </header>
+
+    <p class="intro-copy">just tryna take care of myself, retire my parents, and build cool shit.</p>
+
+    <section class="work" aria-labelledby="work-title">
+      <div class="section-head">
+        <h2 id="work-title">things I've built</h2>
+        <p aria-hidden="true">hover for a peek · <kbd>j</kbd> <kbd>k</kbd> to move</p>
+      </div>
+      <ol class="work-list" data-work-list>
+        {
+          projects.map((project) => (
+            <li>
+              <a
+                class="work-row"
+                href={`/projects/${project.slug}/`}
+                data-slug={project.slug}
+                data-peek={project.peekSrc}
+                data-clip={project.clip?.src}
+                data-poster={project.clip?.poster}
+                data-shape={project.clip?.shape ?? "wide"}
+                style={`--tilt: ${project.angle}deg;`}
+              >
+                <img
+                  class="work-row__logo"
+                  src={project.logoSrc}
+                  alt=""
+                  width="40"
+                  height="40"
+                  style={`view-transition-name: ${morphName(project.slug)}; view-transition-class: project-logo;`}
+                />
+                <span class="work-row__text">
+                  <span class="work-row__name">
+                    {project.name}
+                    <span class="work-row__arrow" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </span>
+                  <span class="work-row__line">{project.description}</span>
+                </span>
+                <span class="status" data-status={project.status}>
+                  {project.status}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <div class="home-more">
+    <section class="home-links" aria-labelledby="build-title">
+      <div class="section-head">
+        <h2 id="build-title">how I build</h2>
+      </div>
+      <div class="cards">
+        <a class="card" href="/workflow/" data-astro-prefetch="load">
+          <span class="card__art deck" aria-hidden="true">
+            {
+              deck.map((icon, index) => (
+                <span class="deck__tile" style={`--i: ${index}; --brand: ${icon.hex === "000000" ? "var(--ink)" : `#${icon.hex}`};`}>
+                  <svg viewBox="0 0 24 24">
+                    <path d={icon.path} />
+                  </svg>
+                </span>
+              ))
+            }
+          </span>
+          <span class="card__title">stack + AI workflow <span class="card__arrow" aria-hidden="true">&rarr;</span></span>
+          <span class="card__sub">the tools and agents I use every day</span>
         </a>
-        <h1 class="identity-name" id="intro-heading" aria-label="Kausthubh N">
-          <span class="identity-name__word">Kausthubh</span><span class="identity-name__dot">.</span><span
-            class="identity-name__last">N</span
-          >
-        </h1>
-        <nav class="social-nav" aria-label="Social links">
-          {
-            socials.map((social) => (
-              <a class="social-link" href={social.href} aria-label={social.label} target="_blank" rel="noreferrer">
+        <a class="card" href="https://github.com/kausthubh-coder/skills" target="_blank" rel="noreferrer">
+          <span class="card__art chips" aria-hidden="true">
+            {
+              skills.map((skill, index) => (
+                <span class="chips__chip" style={`--i: ${index};`}>
+                  {skill}
+                </span>
+              ))
+            }
+          </span>
+          <span class="card__title">my agent skills <span class="card__arrow" aria-hidden="true">&nearr;</span></span>
+          <span class="card__sub">the skill library every one of my agents runs with</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="home-links" aria-labelledby="hi-title">
+      <div class="section-head">
+        <h2 id="hi-title">say hi</h2>
+      </div>
+      <ul class="contacts">
+        <li class="contact contact--email">
+          <a class="contact__link" href={emailHref}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={siGmail.path} /></svg>
+            <span class="contact__label">email</span>
+            <span class="contact__handle">{site.email}</span>
+          </a>
+          <button class="copy-button" type="button" data-copy-email={site.email}>
+            <span data-copy>copy</span>
+            <span data-copied aria-hidden="true">copied</span>
+          </button>
+        </li>
+        {
+          socials.map((social) => (
+            <li class="contact">
+              <a class="contact__link" href={social.href} target="_blank" rel="noreferrer">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d={social.icon.path} />
                 </svg>
+                <span class="contact__label">{social.label}</span>
+                <span class="contact__handle">{social.handle}</span>
+                <span class="contact__arrow" aria-hidden="true">
+                  &nearr;
+                </span>
               </a>
-            ))
-          }
-        </nav>
-      </div>
-
-      <p class="intro-copy">
-        just tryna take care of myself, retire my parents, and build cool shit.
-      </p>
-
-      <div class="projects-row">
-        <div class="section-heading">
-          <h2 id="projects-heading">my favorite projects</h2>
-          <p class="project-hint">
-            <span class="project-hint__desktop">
-              poke them, they open up
-              <svg class="project-hint__arrow" viewBox="0 0 64 24" aria-hidden="true" focusable="false">
-                <path d="M2 15c9-9 17 9 27 1s15-10 30-4" pathLength="1"></path>
-                <path d="M51 5l9 7-10 5" pathLength="1"></path>
-              </svg>
-            </span>
-            <span class="project-hint__mobile">swipe and tap to hear me yap about it</span>
-          </p>
-        </div>
-        <ProjectStack />
-      </div>
-
-      <div class="resource-rows">
-        <div class="resource-row">
-          <p>my stack + AI workflow:</p>
-          <a href="/workflow/" data-astro-prefetch="load" aria-label="See my stack and AI workflow">click here</a>
-        </div>
-        <div class="resource-row">
-          <p>my email:</p>
-          <a href={emailHref} aria-label="Email me">mail me</a>
-        </div>
-      </div>
+            </li>
+          ))
+        }
+      </ul>
     </section>
+    </div>
+
+    <footer class="site-foot">
+      <span>made by hand, mostly.</span>
+      <ThemeToggle />
+    </footer>
   </main>
+
+  <div class="peek" aria-hidden="true" data-peek-card>
+    <img alt="" width="360" height="225" decoding="async" />
+    <video muted loop playsinline preload="none" width="360" height="225" hidden></video>
+  </div>
+
   <IntroSequence />
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const list = document.querySelector("[data-work-list]");
+    if (!list) return;
+    const rows = [...list.querySelectorAll(".work-row")];
+
+    // j/k (or the arrow keys inside the list) walk the rows; Enter opens one.
+    document.addEventListener("keydown", (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.target instanceof HTMLElement && event.target.closest("input, textarea, [contenteditable]")) return;
+      const inList = list.contains(document.activeElement);
+      const down = event.key === "j" || (inList && event.key === "ArrowDown");
+      const up = event.key === "k" || (inList && event.key === "ArrowUp");
+      if (!down && !up) return;
+      event.preventDefault();
+      const index = rows.indexOf(document.activeElement);
+      const next = index < 0 ? (down ? 0 : rows.length - 1) : (index + (down ? 1 : -1) + rows.length) % rows.length;
+      rows[next].focus();
+    });
+
+    // Back from a project: its row lights up once.
+    document.addEventListener("portfolio:return", (event) => {
+      const row = rows.find((item) => item.dataset.slug === event.detail?.slug);
+      if (!row) return;
+      row.classList.add("is-returning");
+      row.addEventListener("animationend", () => row.classList.remove("is-returning"), { once: true });
+    });
+
+    // The peek: a short clip of the product (or a screenshot when there's no
+    // clip) that trails the cursor and leans into the motion.
+    const peek = document.querySelector("[data-peek-card]");
+    const image = peek?.querySelector("img");
+    const video = peek?.querySelector("video");
+    const canPeek =
+      peek &&
+      window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 900px)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!canPeek) return;
+
+    let target = { x: 0, y: 0 };
+    let pos = { x: 0, y: 0 };
+    let frame = 0;
+    let showing = false;
+
+    const tick = () => {
+      const dx = target.x - pos.x;
+      pos.x += dx * 0.2;
+      pos.y += (target.y - pos.y) * 0.2;
+      peek.style.setProperty("--x", `${pos.x}px`);
+      peek.style.setProperty("--y", `${pos.y}px`);
+      peek.style.setProperty("--r", `${Math.max(-8, Math.min(8, dx * 0.12))}deg`);
+      frame = Math.abs(dx) > 0.2 || Math.abs(target.y - pos.y) > 0.2 || showing ? requestAnimationFrame(tick) : 0;
+    };
+
+    // A preview is a decision, not a hover state: it waits until the pointer
+    // rests on a row, then moves between rows instantly once it's open, and
+    // lingers briefly on the way out so crossing a gap doesn't flicker.
+    let openTimer = 0;
+    let closeTimer = 0;
+    const show = () => {
+      showing = true;
+      peek.classList.add("is-on");
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
+    list.addEventListener("pointermove", (event) => {
+      // Keep the whole card on screen: it flips above the cursor near the bottom.
+      const below = event.clientY + 20;
+      const fits = below + peek.offsetHeight < window.innerHeight - 12;
+      target = {
+        x: Math.min(event.clientX + 24, window.innerWidth - peek.offsetWidth - 12),
+        y: fits ? below : Math.max(12, event.clientY - peek.offsetHeight - 20),
+      };
+      if (showing) {
+        if (!frame) frame = requestAnimationFrame(tick);
+        return;
+      }
+      pos = { ...target };
+      window.clearTimeout(openTimer);
+      openTimer = window.setTimeout(show, 320);
+    });
+
+    // Loading starts as soon as the pointer reaches a row, so the clip has the
+    // rest delay to buffer before the card opens. Each row starts its clip over.
+    const load = (row) => {
+      peek.classList.toggle("is-tall", row.dataset.shape === "tall");
+      const clip = row.dataset.clip;
+      video.hidden = !clip;
+      image.hidden = Boolean(clip);
+      if (!clip) {
+        video.pause();
+        if (image.getAttribute("src") !== row.dataset.peek) image.src = row.dataset.peek;
+        return;
+      }
+      if (video.getAttribute("src") !== clip) {
+        video.poster = row.dataset.poster;
+        video.src = clip;
+      }
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    };
+
+    rows.forEach((row) => {
+      row.addEventListener("pointerenter", () => {
+        window.clearTimeout(closeTimer);
+        load(row);
+      });
+    });
+
+    list.addEventListener("pointerleave", () => {
+      window.clearTimeout(openTimer);
+      closeTimer = window.setTimeout(() => {
+        showing = false;
+        peek.classList.remove("is-on");
+        video.pause();
+      }, 120);
+    });
+    window.addEventListener("pagehide", () => peek.classList.remove("is-on"));
+  })();
+
+  (() => {
+    const button = document.querySelector("[data-copy-email]");
+    if (!button) return;
+    let timer = 0;
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyEmail);
+      } catch {
+        window.location.href = `mailto:${button.dataset.copyEmail}`;
+        return;
+      }
+      button.classList.add("is-copied");
+      button.setAttribute("aria-label", "Email copied");
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        button.classList.remove("is-copied");
+        button.removeAttribute("aria-label");
+      }, 1600);
+    });
+  })();
+</script>

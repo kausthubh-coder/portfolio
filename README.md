@@ -1,17 +1,15 @@
-# kausthubh portfolio
+# portfolio
 
-A fast, static [Astro](https://astro.build) site for Kausthubh N: a home page, three project write-ups, and a stack + AI workflow page.
+A fast, static [Astro](https://astro.build) site for Kausthubh N: a home page that lists the projects, one page per project, and a stack + AI workflow page.
 
-Live at <https://kausthubh-portfolio.vercel.app>.
+Live at <https://kausthubh.dev>.
 
 ## Routes
 
 | Route | What it is |
 | --- | --- |
-| `/` | identity, project stack, links to the workflow page and email |
-| `/projects/studi/` | Studi write-up |
-| `/projects/amy/` | Amy write-up |
-| `/projects/kriyan/` | Kriyan write-up |
+| `/` | identity, the project list, links to the workflow page and email |
+| `/projects/<slug>/` | one page per file in `src/content/projects/` |
 | `/workflow/` | tools I use every day and build products with, with a last-updated date |
 | `/404` | not-found page |
 | `/sitemap.xml`, `/robots.txt` | generated at build time |
@@ -21,38 +19,51 @@ Live at <https://kausthubh-portfolio.vercel.app>.
 ```sh
 bun install
 bun run dev      # local dev server
-bun run check    # astro check (types + templates)
+bun run check    # astro check (types, templates, content schema)
 bun run build    # check, then build to dist/
-bun run preview  # serve dist/
+bun run shots    # build, then screenshot every route at 1280 and 390, light and dark
+```
+
+`bun run shots` fails on console errors, 404s and sideways scrolling. See `.agents/skills/verify-portfolio/SKILL.md`.
+
+```sh
+bun run peeks    # re-render the product clips in public/peeks/ (needs ffmpeg on PATH)
+bun run og       # re-render public/og.png, the link preview image
 ```
 
 ## Where things live
 
 ```
 src/
-  data/site.ts           site URL, description, email, workflow last-updated date
-  data/projects.ts       all project content; project pages are generated from it
-  layouts/BaseLayout.astro   <head>, SEO/share tags, intro boot, page transitions
-  components/IntroSequence.astro   first-visit logo intro on the home page
-  components/ProjectStack.astro    desktop logo stack + mobile swipe fan
-  pages/                 index, projects/[slug], workflow, 404, sitemap, robots
-  styles/global.css      all shared styles
-public/                  font, logos, project screenshots, tool icons
+  content/projects/<slug>.yaml   one project: copy, links, features, stack
+  content/projects/<slug>/       its logo and screenshots (optimised at build time)
+  content.config.ts              the project schema; a bad field fails the build
+  lib/projects.ts                loads projects in order, resolves logos and peeks
+  data/site.ts                   site URL, description, email, workflow date
+  layouts/BaseLayout.astro       <head>, theme boot, share tags, page transitions
+  components/IntroSequence.astro first-visit logo intro on the home page
+  components/ThemeToggle.astro   light/dark switch
+  pages/                         index, projects/[slug], workflow, 404, sitemap, robots
+  styles/global.css              tokens and every shared style
+public/                          font, site logo, share image, tool icons
+scripts/shots.mjs                the screenshot check
+scripts/peeks/                   storyboards and renderer for the product clips
+public/peeks/<slug>.mp4          the clip that plays in the home peek and leads the project page
 ```
 
 ## Common edits
 
-- **Add or edit a project:** edit `src/data/projects.ts`. The page, sitemap entry, and home stack come from it. The home stack layout and the logo view-transition rules in `global.css` currently assume exactly three projects, so a fourth needs those extended (`project-logo-<slug>` selectors and the `nth-child` fan positions).
+- **Add a project:** add `src/content/projects/<slug>.yaml` and a `<slug>/` folder with `logo.png` and screenshots. Copy an existing file for the shape. The home row, its page, the next/previous links, the 404 and the sitemap all pick it up. For a clip, add a storyboard to `scripts/peeks/stories.js` and run `bun run peeks -- <slug>`; without one the page falls back to the first screenshot.
 - **Update the workflow page:** edit the tool lists in `src/pages/workflow.astro`, then bump `workflowUpdated` in `src/data/site.ts`.
-- **Change the domain, description, or email:** `src/data/site.ts`. Canonical URLs, share tags, the sitemap, and robots.txt all read from it.
+- **Change the domain, description or email:** `src/data/site.ts`.
 
 ## How the moving parts work
 
-- **Intro:** plays once per tab session on a first visit to `/` (and on reload). It is skipped for reduced-motion users and when arriving from another page on the site. A CSS failsafe reveals the page if the intro script ever fails to finish.
-- **Project roll call:** the first time home is seen in a session, the desktop logo stack fans out and names each project, then fidgets every few seconds until someone hovers or focuses it. Skipped for reduced motion.
-- **Page transitions:** native cross-document view transitions. The project logo morphs between home and its project page; browsers without support just navigate normally.
-- **JavaScript:** everything is inline and small. The only emitted bundle is Astro's link prefetch script.
+- **Intro:** plays once per tab on a first visit to `/` (and on reload). It's skipped for reduced motion and when arriving from another page on the site. A CSS failsafe shows the page if the script never finishes.
+- **Page transitions:** native cross-document view transitions. Every project logo has `view-transition-class: project-logo`, so the logo morphs between its home row and its page for any number of projects. Browsers without support just navigate.
+- **Theme:** follows the system until you press the toggle, then remembers your choice in `localStorage`. The switch wipes in from the button.
+- **JavaScript:** all inline and small. The only emitted bundle is Astro's link prefetch.
 
 ## Deploy
 
-Vercel builds with `bun run build` and serves `dist/` (see `vercel.json`). `404.html` is picked up automatically.
+Vercel builds with `bun run build` and serves `dist/` (see `vercel.json`).

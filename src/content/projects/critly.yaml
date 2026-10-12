@@ -1,0 +1,65 @@
+name: Critly
+order: 3
+year: 2026
+status: live
+logo: ./critly/logo.png
+angle: -5
+description: design principles and skills that help coding agents build better UI
+platforms: web, plus skills for Claude Code and Codex
+license: MIT
+summary: >-
+  critly is a design tool for building with agents. it's a library of design principles, each with the rule, real
+  numbers and a demo you can toggle, plus skills that let your agent build and review UI with them. a linter is next.
+  it will measure the running app and fail with the fix named.
+links:
+  - label: browse the library
+    href: https://critly.vercel.app/
+  - label: github
+    href: https://github.com/kausthubh-coder/critly
+numbers:
+  - value: "~70"
+    label: design concepts, each with a demo
+  - value: "2"
+    label: agent skills, generated from the library
+  - value: "1"
+    label: command to install them
+previews:
+  - src: ./critly/01-concept.webp
+    alt: Critly concept page about tabular numbers with a toggleable demo
+    title: a concept
+    caption: one idea, one rule, and a demo you can flip between wrong and right.
+  - src: ./critly/02-easings.webp
+    alt: Critly easing concept in dark mode comparing ease-in and ease-out
+    title: easing, side by side
+    caption: the same 250ms menu with ease-in and ease-out, so you can feel the difference.
+  - src: ./critly/03-phone.webp
+    alt: Critly concept page on a phone in dark mode
+    title: on a phone
+    caption: the library reads just as well at 390px.
+    mobile: true
+features:
+  - title: a library you can try
+    body: concepts across type, colour, spacing, motion, states and performance, each with real numbers and an interactive demo.
+  - title: skills for your agent
+    body: critly builds and reviews UI with the concepts, and critly-audit audits a whole app. this site was redone with them.
+  - title: a linter, coming next
+    body: critly check will measure your running app against your design rules and fail with the fix named, so an agent can't talk its way past it.
+story:
+  - writing code costs almost nothing now. design is the slow part. agents build UI that works but feels generic, with default easings, no states past the happy path, and off-scale spacing.
+  - rules in a prompt get read once and forgotten. I wanted principles an agent actually uses while it builds, and a check it can't argue with.
+stack:
+  - name: Next.js
+    icon: siNextdotjs
+    why: every concept page is content, so it's all served static.
+  - name: MDX
+    icon: siMdx
+    why: one typed source feeds the site and generates the skills.
+  - name: Motion
+    why: the demos need real springs.
+  - name: Playwright
+    why: the linter measures the rendered page, not the source.
+architecture:
+  - title: one source, two readers
+    body: concepts are MDX files. the same content builds the site for people and the skill files for agents, so they never drift.
+  - title: demos are the argument
+    body: each concept ships a wrong and a right version of the same component, so you feel the difference instead of reading about it.

@@ -1,12 +1,12 @@
 export const site = {
   name: "Kausthubh N",
-  url: "https://kausthubh-portfolio.vercel.app",
+  url: "https://kausthubh.dev",
   description:
-    "Kausthubh N builds cool stuff: Studi, an agentic AI tutor; Amy, an Android calorie tracker; and Kriyan, a personal agent workspace.",
+    "Kausthubh N builds cool stuff: Studi, Kriyan, Critly, Likh, Krida and Amy.",
   email: "kausthubh2007@gmail.com",
-  shareImage: "/apple-touch-icon.png",
+  shareImage: "/og.png",
   /** Bump this whenever the stack + AI workflow page changes. */
-  workflowUpdated: "2026-09-17",
+  workflowUpdated: "2026-10-12",
 };
 
 export const emailHref = `mailto:${site.email}`;

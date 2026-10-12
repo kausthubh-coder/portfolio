@@ -1,0 +1,72 @@
+name: Kriyan
+order: 2
+year: 2026
+status: live
+logo: ./kriyan/logo.png
+angle: 5
+description: open-source day planner your AI can read and plan in
+platforms: web, android, CLI and MCP
+license: MIT
+summary: >-
+  kriyan is a planner that's mostly a timeline. timed tasks sit on the day, everything else waits in a tray beside
+  it, and length is optional. it has an MCP server, so Claude or any other AI client can read your tasks and plan
+  with you. it's free, and the demo doesn't need an account.
+links:
+  - label: try the demo
+    href: https://kriyan.app/demo
+  - label: kriyan.app
+    href: https://kriyan.app/
+  - label: github
+    href: https://github.com/kausthubh-coder/kriyan
+numbers:
+  - value: "4"
+    label: ways in. web, android, CLI and MCP
+  - value: "1"
+    label: parser behind all of them
+  - value: "0"
+    label: sign-ups to try it
+previews:
+  - src: ./kriyan/01-day.webp
+    alt: Kriyan day view with a task tray, a timeline, and deadlines and goals on the side
+    title: the day
+    caption: tray on the left, timeline in the middle, deadlines and goals on the right.
+  - src: ./kriyan/02-goals.webp
+    alt: Kriyan goals view with pace markers
+    title: goals
+    caption: goals show where you should be today, not just a percentage.
+  - src: ./kriyan/03-android.webp
+    alt: Kriyan Android app showing the day timeline
+    title: android
+    caption: the same day on your phone.
+    mobile: true
+features:
+  - title: your day on one timeline
+    body: drag to schedule or resize. tasks without a time wait in the tray until you're ready for them.
+  - title: type it like you'd say it
+    body: 'quick-add turns "essay fri #econ 2h" into a day, an area and a length.'
+  - title: plan with the AI you already use
+    body: the MCP server lets Claude and other clients read and plan your tasks. goals show pace, and the week shows when you're overbooked.
+story:
+  - I wanted a planner that's mostly a timeline, where length is optional, and where the AI I already talk to can plan with me instead of being one more app to open.
+  - so it's one backend with four ways in, and it's open source, so your data stays yours.
+stack:
+  - name: Next.js
+    icon: siNextdotjs
+    why: one app serves the site, the web app, the docs, the API and /mcp.
+  - name: Convex
+    icon: siConvex
+    why: one live backend shared by every surface.
+  - name: Clerk
+    icon: siClerk
+    why: one sign-in across web, android and MCP.
+  - name: Expo
+    icon: siExpo
+    why: the android app, shipped as an APK.
+  - name: MCP
+    icon: siModelcontextprotocol
+    why: how your AI gets to your tasks.
+architecture:
+  - title: one parser everywhere
+    body: a shared core package holds the quick-add parser and date logic with no React, so every surface reads "fri 2h" the same way.
+  - title: one backend, four ways in
+    body: web, android, the CLI and the MCP server all call the same Convex functions, so a task Claude adds shows up on your phone right away.

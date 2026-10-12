@@ -1,31 +1,25 @@
 ---
-import * as simpleIcons from "simple-icons";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import { emailHref, site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { iconFor } from "../lib/projects";
 
 type Tool = {
   name: string;
   use: string;
   icon?: string;
   image?: string;
-  mark?: string;
-  href?: string;
+  href: string;
   accent: string;
-};
-
-const iconFor = (key?: string): { path: string } | null => {
-  if (!key) return null;
-  const icon = (simpleIcons as unknown as Record<string, { path: string } | undefined>)[key];
-  return icon ?? null;
 };
 
 const dailyTools: Tool[] = [
   {
-    name: "Codex",
-    use: "my AI coding agent of choice; the app is great, and the limits are generous",
-    image: "/tools/codex.svg",
-    href: "https://openai.com/codex/get-started/",
-    accent: "#10a37f",
+    name: "Claude Code",
+    use: "my coding agent now; I moved over from Codex and I'm getting a lot more done",
+    icon: "siClaude",
+    href: "https://claude.com/claude-code",
+    accent: "#d97757",
   },
   {
     name: "cmux",
@@ -43,17 +37,24 @@ const dailyTools: Tool[] = [
   },
   {
     name: "Kriyan",
-    use: "my second brain, productivity app, and personal agent",
+    use: "my planner; my AI plans my day with me through its MCP server",
     image: "/logos/kriyan-icon.svg",
-    href: "https://github.com/kausthubh-coder/kriyan",
+    href: "https://kriyan.app/",
     accent: "#6c6c6c",
   },
   {
-    name: "Oracle",
-    use: "my workflow skill for Codex",
-    image: "/tools/oracle.svg",
-    href: "https://www.skills.sh/kausthubh-coder/oracle-skill/oracle",
-    accent: "#7c4dff",
+    name: "Critly",
+    use: "my design skills, so my agents build UI that looks and feels right",
+    image: "/tools/critly.png",
+    href: "https://critly.vercel.app/",
+    accent: "#e5533d",
+  },
+  {
+    name: "my skills",
+    use: "my agent skill library, linked into every agent I run",
+    icon: "siGithub",
+    href: "https://github.com/kausthubh-coder/skills",
+    accent: "#6c6c6c",
   },
 ];
 
@@ -110,8 +111,8 @@ const appTools: Tool[] = [
 ];
 
 const sections = [
-  { id: "daily", title: "what I use every day", tools: dailyTools, offset: 0 },
-  { id: "apps", title: "what I build products with", tools: appTools, offset: dailyTools.length },
+  { id: "daily", title: "what I use every day", tools: dailyTools },
+  { id: "apps", title: "what I build products with", tools: appTools },
 ];
 
 const updated = new Date(`${site.workflowUpdated}T12:00:00Z`);
@@ -122,15 +123,11 @@ const updatedLabel = updated.toLocaleDateString("en-US", { month: "long", day: "
   title={`Stack + AI workflow | ${site.name}`}
   description="The tools, services, and AI workflow Kausthubh uses to think, build, and ship products."
 >
-  <main class="detail-page tools-page">
-    <a href="/" class="tools-back"><span aria-hidden="true">&larr;</span> home</a>
+  <main class="page">
+    <a class="back-link" href="/"><span aria-hidden="true">&larr;</span> back home</a>
 
     <header class="tools-intro">
-      <img src="/logo.webp" alt="" width="56" height="56" />
-      <div>
-        <p class="tools-kicker">my setup</p>
-        <h1>tools</h1>
-      </div>
+      <h1>tools</h1>
       <p>
         The software, services, and systems I keep reaching for. This is the short version for now; I will add the
         deeper why behind each choice as the stack changes.
@@ -140,27 +137,31 @@ const updatedLabel = updated.toLocaleDateString("en-US", { month: "long", day: "
 
     {
       sections.map((section) => (
-        <section class={`tools-section tools-section--${section.id}`} aria-labelledby={`${section.id}-tools-title`}>
-          <h2 id={`${section.id}-tools-title`}>{section.title}</h2>
+        <section class="tools-section" aria-labelledby={`${section.id}-tools-title`}>
+          <div class="section-head">
+            <h2 id={`${section.id}-tools-title`}>{section.title}</h2>
+          </div>
           <ul class="tools-list">
-            {section.tools.map((tool, index) => {
+            {section.tools.map((tool) => {
               const icon = iconFor(tool.icon);
               return (
-                <li class="tools-item" style={`--tool-accent: ${tool.accent}; --tool-index: ${index + section.offset};`}>
+                <li class="tools-item" style={`--tool-accent: ${tool.accent};`}>
                   <span class="tools-icon" aria-hidden="true">
                     {tool.image ? (
-                      <img src={tool.image} alt="" width="38" height="38" loading="lazy" />
+                      <img src={tool.image} alt="" width="20" height="20" loading="lazy" />
                     ) : icon ? (
-                      <svg viewBox="0 0 24 24"><path d={icon.path} /></svg>
-                    ) : (
-                      <span class="tools-mark">{tool.mark}</span>
-                    )}
+                      <svg viewBox="0 0 24 24">
+                        <path d={icon.path} />
+                      </svg>
+                    ) : null}
                   </span>
                   <div class="tools-copy">
                     <h3>
-                      {tool.href ? <a href={tool.href} target="_blank" rel="noreferrer">{tool.name}</a> : tool.name}
+                      <a href={tool.href} target="_blank" rel="noreferrer">
+                        {tool.name}
+                      </a>
                     </h3>
-                    <p><span aria-hidden="true">&#8627;</span>{tool.use}</p>
+                    <p>{tool.use}</p>
                   </div>
                 </li>
               );
@@ -170,9 +171,9 @@ const updatedLabel = updated.toLocaleDateString("en-US", { month: "long", day: "
       ))
     }
 
-    <footer class="tools-footer">
-      <span>still changing, still shipping.</span>
-      <a href={emailHref}>tell me what I am missing</a>
+    <footer class="site-foot">
+      <span>still changing, still shipping. <a class="link" href={emailHref}>tell me what I'm missing</a></span>
+      <ThemeToggle />
     </footer>
   </main>
 </BaseLayout>

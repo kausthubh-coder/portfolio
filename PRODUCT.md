@@ -12,8 +12,8 @@ Anyone who lands on it: people deciding whether to work with him, technical peer
 
 ## What is on it
 
-- **Home:** identity, one line of voice, the project stack, a link to the stack + AI workflow page, and email.
-- **Project pages** (Studi, Amy, Kriyan): status and links, real product screens, why it exists, what it does, and how it is built.
+- **Home:** identity, one line of voice, the project list (readable without hovering), a link to the stack + AI workflow page, and email.
+- **Project pages** (Studi, Kriyan, Critly, Likh, Krida, Amy): status and links, real product screens, why it exists, what it does, and how it is built.
 - **Stack + AI workflow:** the tools in daily use and the ones products get built with, with a last-updated date.
 - **404:** on brand, with a way back.
 
@@ -37,7 +37,7 @@ Precise, kinetic, human. Confident and spare, lowercase and a little unserious, 
 ## Design principles
 
 - **Show the work quickly.** The first screen communicates identity and the projects without a marketing preamble.
-- **Teach by showing.** If something is interactive, the page demonstrates it (the project roll call) instead of relying on a hint nobody reads.
+- **Teach by showing.** If something is interactive, the page demonstrates it (the screenshot peek on hover) instead of relying on a hint nobody reads.
 - **Make motion functional.** The intro orients the visitor and stays short. It plays on a first visit, never on the way back from another page.
 - **Fun may decorate, never gate.** Hover and motion can add emphasis, but no content or link is reachable only by hovering.
 - **Mostly static.** JavaScript only for interactive moments that earn it, inline and small.
