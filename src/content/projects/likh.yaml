@@ -1,0 +1,61 @@
+name: Likh
+order: 4
+year: 2026
+status: live
+logo: ./likh/logo.png
+angle: -4
+description: native dictation for windows that idles at 2 MB
+platforms: windows, mac in alpha
+license: MIT
+summary: >-
+  likh is a dictation app. hold ctrl + space, talk, let go, and the words paste wherever you're typing. it
+  transcribes with the ChatGPT plan you already have through the Codex sign-in, so there's no API key and nothing
+  extra to pay. it's fully native, with voice commands, history and hands-free mode.
+links:
+  - label: download likh
+    href: https://getlikh.vercel.app/
+  - label: github
+    href: https://github.com/kausthubh-coder/likh
+numbers:
+  - value: 2 MB
+    label: memory while it waits
+  - value: 13 MB
+    label: memory while you talk
+  - value: ~0%
+    label: CPU and GPU at idle
+previews:
+  - src: ./likh/settings-general.webp
+    alt: Likh settings showing the Ctrl plus Space shortcut and three ways to start recording
+    title: settings
+    caption: pick the shortcut and how it starts. hold, tap for hands-free, or tap to toggle.
+  - src: ./likh/onboarding-welcome.webp
+    alt: Likh welcome screen reading Talk. It types.
+    title: first run
+    caption: a short setup and you're dictating.
+    mobile: true
+  - src: ./likh/settings-history.webp
+    alt: Likh history list of recent dictations
+    title: history
+    caption: everything you said stays on your machine, so you can grab it again later.
+features:
+  - title: hold, talk, let go
+    body: a system-wide shortcut records you, transcribes it, and pastes at your cursor in any app.
+  - title: voice commands
+    body: say "new line", "press enter" or "scratch that" while you dictate.
+  - title: built to sit there all day
+    body: it draws on the CPU with no browser engine inside, so leaving it running costs you nothing.
+story:
+  - I wanted dictation that's instant, reliable, and free to leave running. the ones I tried sat at hundreds of MB doing nothing.
+  - likh reuses the ChatGPT plan I already pay for, so there's no key to paste. early tests had the GPU renderer idling at over 200 MB, so the GPU went, and so did the fancy glass.
+stack:
+  - name: Rust
+    icon: siRust
+    why: small, fast, and no runtime to carry around.
+  - name: iced
+    icon: siIced
+    why: native UI drawn in software, so idle memory stays tiny.
+  - name: Win32
+    why: its own global hotkey and the little pill on screen while you talk.
+  - name: OpenAI
+    why: transcription through the Codex sign-in, on the plan you already have.
+architecture: []

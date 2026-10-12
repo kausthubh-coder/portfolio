@@ -1,0 +1,64 @@
+name: Krida
+order: 5
+year: 2026
+status: building
+logo: ./krida/logo.png
+angle: 6
+description: watch movies and shows with friends, in sync
+platforms: web, more coming
+summary: >-
+  krida is a streaming app built around watching together. a party keeps everyone's play, pause and seek in sync,
+  waits for whoever is buffering, and has a shared queue and chat. it's on the web today. next it goes
+  cross-platform, with plugins and a way to publish your own stuff.
+links:
+  - label: open krida
+    href: https://krida-tv.vercel.app/
+  - label: github
+    href: https://github.com/kausthubh-coder/krida
+previews:
+  - src: ./krida/01-home.webp
+    alt: Krida home screen with a featured title, a watch party prompt and a row of top picks
+    title: home
+    caption: picks come from what you watch and rate, with a party one tap away.
+  - src: ./krida/02-watch-party.webp
+    alt: Krida player with the party panel open, showing who is watching, an up next queue and search
+    title: watch party
+    caption: the party panel sits beside the player. queue the next thing without stopping this one.
+  - src: ./krida/03-title.webp
+    alt: Krida title page for Dune Part Two with play and watch together buttons
+    title: a title
+    caption: watch together sits right next to play.
+  - src: ./krida/04-search.webp
+    alt: Krida search results grid
+    title: search
+    caption: movies and shows in one place.
+features:
+  - title: watch parties that stay in sync
+    body: play, pause and seek land for everyone. the party waits for whoever is buffering, with a shared queue, chat, reactions and a soundboard.
+  - title: picks from your taste
+    body: recommendations come from what you watch and rate, and every title shows IMDb, Rotten Tomatoes, Metacritic and Letterboxd scores.
+  - title: a player that gets out of the way
+    body: skip the intro, recap and credits, see what's up next, and switch episodes without leaving the player.
+story:
+  - I wanted one place for a friend and me to pick something and actually watch it together, without counting down "3, 2, 1, play" over a call.
+  - most of the time goes to the player, so most of the effort did too. next is the bigger version, on par with Nuvio but with party sync built in, apps on every platform, and plugins.
+stack:
+  - name: React
+    icon: siReact
+    why: React 19 with Vite keeps it quick to load and quick to work on.
+  - name: Convex
+    icon: siConvex
+    why: rooms, chat and playback state sync live without a server of my own.
+  - name: hls.js
+    why: adaptive streaming in the browser, with the player under my control.
+  - name: Tailwind CSS
+    icon: siTailwindcss
+    why: fast to style, with the tokens in one place.
+  - name: TMDB
+    icon: siThemoviedatabase
+    why: titles, art and episodes, with ratings from MDBList on top.
+architecture:
+  - title: one clock for the room
+    body: the party keeps a single playback state on the server. each player follows it, and nobody resumes until everyone has buffered.
+  - title: one title, one id
+    body: movies and shows from different sources are matched to one id, so history, ratings and the queue agree about what you watched.

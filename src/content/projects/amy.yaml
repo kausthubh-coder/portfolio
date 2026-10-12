@@ -1,0 +1,62 @@
+name: Amy
+order: 6
+year: 2026
+status: live
+logo: ./amy/logo.png
+angle: 7
+description: android calorie tracker where you just type what you ate
+platforms: android
+license: GPL-3.0
+summary: >-
+  amy is a calorie tracker built on something you already do, writing a list. each line becomes an entry with
+  calories and macros you can still edit. AI estimates are there if you bring your own key, but you don't need one:
+  type "latte 190 cal" and amy remembers it next time. no account, and the diary stays on your phone.
+links:
+  - label: get amy
+    href: https://openamy.app/
+  - label: github
+    href: https://github.com/kausthubh-coder/amy
+previews:
+  - src: ./amy/01-line.webp
+    alt: Amy today screen with the line two eggs toast estimated at 390 calories
+    title: one line
+    caption: '"two eggs toast" becomes 390 cal right on the line.'
+    mobile: true
+  - src: ./amy/02-photo.webp
+    alt: Amy food photo capture with an optional prompt
+    title: photos
+    caption: snap a meal, add a note if you want, and amy estimates it.
+    mobile: true
+  - src: ./amy/03-streaks.webp
+    alt: Amy stats with a streak and today's calories and macros against goals
+    title: streaks
+    caption: streaks, plus today's calories and macros against your goals.
+    mobile: true
+features:
+  - title: one food per line
+    body: type a line, press enter, and it turns into calories and macros you can still edit.
+  - title: lots of ways in
+    body: dictation, food photos and nutrition labels with your own OpenRouter key, barcodes through Open Food Facts, and saved meals.
+  - title: stats, streaks and widgets
+    body: weekly charts, streaks, and two home-screen widgets that open straight into logging.
+story:
+  - most calorie apps make logging feel like data entry. search, tap, confirm, fix the serving, dismiss an upsell, repeat.
+  - amy starts from writing a list. the note stays readable, every number stays editable, and nothing pretends an estimate is exact.
+stack:
+  - name: Expo
+    icon: siExpo
+    why: one android-first codebase for the camera, speech and widgets.
+  - name: AsyncStorage
+    why: the diary stays on the device, with no account and a JSON export.
+  - name: Open Food Facts
+    why: open barcode data with no lock-in.
+  - name: OpenRouter
+    icon: siOpenrouter
+    why: optional AI estimates with your own key.
+architecture:
+  - title: one local source of truth
+    body: a typed store owns entries, goals, saved meals and settings, and every screen reads and writes the same model.
+  - title: everything becomes a draft first
+    body: typed lines, AI estimates, barcode results and saved meals all turn into the same draft shape before they hit the diary.
+  - title: widgets from config
+    body: an Expo config plugin writes the native android widgets, and the app pushes them a small snapshot after each change.

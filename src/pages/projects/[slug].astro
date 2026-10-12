@@ -1,185 +1,261 @@
 ---
-import * as simpleIcons from "simple-icons";
-import { projects } from "../../data/projects";
+import { Image } from "astro:assets";
+import ThemeToggle from "../../components/ThemeToggle.astro";
 import { site } from "../../data/site";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProjects, iconFor, morphName, type Project } from "../../lib/projects";
 
-const iconFor = (key?: string): { path: string } | null => {
-  if (!key) return null;
-  const icon = (simpleIcons as unknown as Record<string, { path: string } | undefined>)[key];
-  return icon ?? null;
-};
-
-export function getStaticPaths() {
-  return projects.map((project) => ({
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, index) => ({
     params: { slug: project.slug },
-    props: { project },
+    props: {
+      project,
+      previous: projects[(index - 1 + projects.length) % projects.length],
+      next: projects[(index + 1) % projects.length],
+    },
   }));
 }
 
-const { project } = Astro.props;
-const isExternalLink = (href: string) => /^https?:\/\//.test(href);
-const pageTitle = `${project.name} — ${project.description.replace(/\.$/, "")} | ${site.name}`;
+type Props = { project: Project; previous: Project; next: Project };
+const { project, previous, next } = Astro.props;
+const pageTitle = `${project.name}: ${project.description} | ${site.name}`;
+
+// A desktop screenshot leads the page. Phone-only projects show their screens
+// side by side instead, since one phone screen alone reads as a thin strip.
+const [first, ...others] = project.previews;
+const lead = first.mobile ? null : first;
+const strip = lead ? others : project.previews;
+const [primary, ...secondary] = project.links;
 ---
 
 <BaseLayout title={pageTitle} description={project.summary}>
-  <main class="pd-shell">
-    <header class="pd-top">
-      <a class="pd-back" href="/" data-astro-prefetch="hover">
-        <span aria-hidden="true">&larr;</span>
-        back home
-      </a>
-    </header>
+  <main class="project-page">
+    <a class="back-link" href="/" data-astro-prefetch="hover"><span aria-hidden="true">&larr;</span> back home</a>
 
-    <section class="pd-hero" aria-labelledby="project-title">
+    <header class="pd-hero">
       <div class="pd-hero__row">
         <img
           class="pd-hero__logo"
-          src={project.logo}
-          alt={project.alt}
-          data-project-mark={project.slug}
-          style={`view-transition-name: project-logo-${project.slug};`}
-          width="384"
-          height="384"
-          loading="eager"
-          decoding="async"
+          src={project.logoSrc}
+          alt=""
+          width="64"
+          height="64"
+          data-project-mark
+          data-morph-name={morphName(project.slug)}
+          style={`view-transition-name: ${morphName(project.slug)}; view-transition-class: project-logo;`}
         />
-        <h1 id="project-title">{project.name}</h1>
+        <div>
+          <h1>{project.name}</h1>
+          <p class="pd-meta">
+            <span class="status" data-status={project.status}>{project.status}</span>
+            <span>{project.platforms}</span>
+            <span>since {project.year}</span>
+            {project.license && <span>{project.license}</span>}
+          </p>
+        </div>
       </div>
-      <p class="pd-tagline">{project.tagline}</p>
-      <p class="pd-meta">
-        <span class="pd-status">{project.status}</span>
-        {
-          project.links.map((link) => (
-            <span class="pd-meta__item">
-              <span aria-hidden="true">&middot;</span>
-              <a
-                href={link.href}
-                target={isExternalLink(link.href) ? "_blank" : undefined}
-                rel={isExternalLink(link.href) ? "noreferrer" : undefined}
-              >
-                {link.label} &rarr;
-              </a>
-            </span>
-          ))
-        }
-      </p>
+      <p class="pd-lede">{project.description}</p>
       <p class="pd-summary">{project.summary}</p>
-    </section>
-
-    <section
-      class={`pd-preview pd-preview--${project.previewLayout}`}
-      aria-labelledby="preview-title"
-    >
-      <div class="pd-heading">
-        <h2 id="preview-title">inside the app</h2>
-        <span class="pd-hint">real product screens</span>
-      </div>
-      <div
-        class="pd-preview__grid"
-        tabindex="0"
-        aria-label={`${project.name} product screenshots`}
-      >
+      <div class="pd-actions">
+        <a class="button" href={primary.href} target="_blank" rel="noreferrer">
+          {primary.label} <span aria-hidden="true">&nearr;</span>
+        </a>
         {
-          project.previews.map((preview, index) => (
-            <figure class:list={["pd-preview__item", { "pd-preview__item--mobile": preview.mobile }]}>
-              <div class="pd-preview__frame">
-                <img
-                  src={preview.src}
-                  alt={preview.alt}
-                  width={preview.width}
-                  height={preview.height}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  fetchpriority={index === 0 ? "high" : "auto"}
-                  decoding="async"
-                />
-              </div>
-              <figcaption>
-                <strong>{preview.title}</strong>
-                <span>{preview.caption}</span>
-              </figcaption>
-            </figure>
+          secondary.map((link) => (
+            <a class="link" href={link.href} target="_blank" rel="noreferrer">
+              {link.label}
+            </a>
           ))
         }
       </div>
-    </section>
+    </header>
 
-    <section class="pd-section" aria-labelledby="story-title">
-      <div class="pd-heading">
-        <h2 id="story-title">why I built this</h2>
-        <span class="pd-hint">the problem and the bet</span>
-      </div>
-      <div class="pd-story">
-        {project.story.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
-    </section>
+    {
+      lead && (
+        <figure class="pd-lead">
+          <button class="shot" type="button" data-full={lead.fullSrc} aria-label={`Enlarge: ${lead.title}`}>
+            <Image
+              src={lead.src}
+              alt={lead.alt}
+              widths={[640, 1280]}
+              sizes="(max-width: 700px) 100vw, 640px"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </button>
+          <figcaption>{lead.caption}</figcaption>
+        </figure>
+      )
+    }
+
+    {
+      project.numbers.length > 0 && (
+        <dl class="pd-numbers">
+          {project.numbers.map((number) => (
+            <div>
+              <dt>{number.label}</dt>
+              <dd>{number.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
 
     <section class="pd-section" aria-labelledby="features-title">
-      <div class="pd-heading">
-        <h2 id="features-title">what it actually does</h2>
-        <span class="pd-hint">the product in practice</span>
-      </div>
+      <h2 id="features-title">what it does</h2>
       <ol class="pd-features">
         {
-          project.features.map((feature, index) => (
+          project.features.map((feature) => (
             <li>
-              <span class="pd-features__index">{String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <h3>{feature.title}</h3>
-                <p>{feature.body}</p>
-              </div>
+              <h3>{feature.title}</h3>
+              <p>{feature.body}</p>
             </li>
           ))
         }
       </ol>
     </section>
 
-    <section class="pd-section" aria-labelledby="build-title">
-      <div class="pd-heading">
-        <h2 id="build-title">how it's built</h2>
-        <span class="pd-hint">the decisions underneath</span>
-      </div>
-      <div class="pd-build">
-        {
-          project.architecture.map((item) => (
-            <article class="pd-build__row">
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))
-        }
-      </div>
-      <div class="pd-stack">
-        <p class="pd-stack__label" id="stack-title">runs on</p>
-        <ul class="pd-stack__grid" aria-labelledby="stack-title">
-          {
-            project.stack.map((item) => {
-              const icon = iconFor(item.icon);
-              return (
-                <li class="pd-stack__item" tabindex="0">
-                  {icon ? (
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d={icon.path} />
-                    </svg>
-                  ) : (
-                    <b aria-hidden="true">{item.name.charAt(0)}</b>
-                  )}
-                  <strong>{item.name}</strong>
-                  <em>{item.why}</em>
-                </li>
-              );
-            })
-          }
-        </ul>
-        <p class="pd-stack__default" aria-hidden="true">hover a tool to see why it is here</p>
+    {
+      strip.length > 0 && (
+        <section class="pd-section" aria-labelledby="shots-title">
+          <h2 id="shots-title">{lead ? "more screens" : "inside the app"}</h2>
+          <div class="pd-shots" data-shots tabindex="0" aria-label={`${project.name} screenshots, scrolls sideways`}>
+            {strip.map((preview) => (
+              <figure class="pd-shot">
+                <button class="shot" type="button" data-full={preview.fullSrc} aria-label={`Enlarge: ${preview.title}`}>
+                  <Image
+                    src={preview.src}
+                    alt={preview.alt}
+                    widths={preview.mobile ? [200, 400] : [480, 960]}
+                    sizes={preview.mobile ? "200px" : "(max-width: 620px) 90vw, 480px"}
+                    loading="lazy"
+                  />
+                </button>
+                <figcaption>
+                  <strong>{preview.title}</strong>
+                  <span>{preview.caption}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="pd-section" aria-labelledby="story-title">
+      <h2 id="story-title">why I built it</h2>
+      <div class="pd-story">
+        {project.story.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </section>
 
-    <div class="pd-resources">
-      <div class="pd-resource-row">
-        <p>seen enough:</p>
-        <a href="/">back home</a>
-      </div>
-    </div>
+    <section class="pd-section" aria-labelledby="stack-title">
+      <h2 id="stack-title">built with</h2>
+      <ul class="pd-stack">
+        {
+          project.stack.map((item) => {
+            const icon = iconFor(item.icon);
+            return (
+              <li>
+                {icon ? (
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d={icon.path} />
+                  </svg>
+                ) : (
+                  <i class="pd-stack__letter" aria-hidden="true">
+                    {item.name.charAt(0)}
+                  </i>
+                )}
+                <strong>{item.name}</strong>
+                <span>{item.why}</span>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    {
+      project.architecture.length > 0 && (
+        <details class="pd-section pd-how">
+          <summary>how it works</summary>
+          <div class="pd-how__body">
+            {project.architecture.map((item) => (
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </details>
+      )
+    }
+
+    <nav class="pd-next" aria-label="More projects">
+      <a href={`/projects/${previous.slug}/`}>
+        <small>&larr; previous</small>
+        <span class="pd-next__name"><img src={previous.logoSrc} alt="" width="20" height="20" />{previous.name}</span>
+      </a>
+      <a href={`/projects/${next.slug}/`}>
+        <small>next &rarr;</small>
+        <span class="pd-next__name"><img src={next.logoSrc} alt="" width="20" height="20" />{next.name}</span>
+      </a>
+    </nav>
+
+    <footer class="site-foot">
+      <a class="back-link" href="/"><span aria-hidden="true">&larr;</span> back home</a>
+      <ThemeToggle />
+    </footer>
   </main>
+
+  <dialog class="lightbox" data-lightbox aria-label="Screenshot">
+    <img alt="" data-lightbox-image />
+  </dialog>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const dialog = document.querySelector("[data-lightbox]");
+    const full = dialog?.querySelector("[data-lightbox-image]");
+    const strip = document.querySelector("[data-shots]");
+    if (!dialog || !full) return;
+
+    // With a mouse, the strip can be dragged sideways like a phone.
+    let start = null;
+    let moved = false;
+    strip?.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
+      start = { x: event.clientX, scroll: strip.scrollLeft };
+      moved = false;
+    });
+    window.addEventListener("pointermove", (event) => {
+      if (!start) return;
+      const dx = event.clientX - start.x;
+      if (!moved && Math.abs(dx) < 6) return;
+      moved = true;
+      strip.classList.add("is-dragging");
+      strip.scrollLeft = start.scroll - dx;
+    });
+    window.addEventListener("pointerup", () => {
+      start = null;
+      strip?.classList.remove("is-dragging");
+    });
+
+    let opener = null;
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-full]");
+      if (!button) return;
+      if (moved) {
+        moved = false;
+        return;
+      }
+      opener = button;
+      full.src = button.dataset.full;
+      full.alt = button.querySelector("img")?.alt ?? "";
+      dialog.showModal();
+    });
+    dialog.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("close", () => opener?.focus());
+  })();
+</script>

@@ -1,17 +1,21 @@
 {
-  "name": "kausthubh-portfolio",
+  "name": "portfolio",
   "dependencies": {
-    "@astrojs/check": "latest",
-    "astro": "latest",
-    "simple-icons": "latest",
-    "typescript": "latest"
+    "@astrojs/check": "0.9.9",
+    "astro": "7.0.6",
+    "simple-icons": "16.24.1",
+    "typescript": "6.0.3"
   },
   "private": true,
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
     "check": "astro check",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "shots": "node scripts/shots.mjs"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "playwright-core": "1.64.0"
+  }
 }
