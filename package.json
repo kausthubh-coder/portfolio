@@ -12,10 +12,13 @@
     "build": "astro check && astro build",
     "check": "astro check",
     "preview": "astro preview",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "peeks": "node scripts/peeks/render.mjs",
+    "og": "node scripts/og.mjs"
   },
   "type": "module",
   "devDependencies": {
+    "@types/node": "26.6.5",
     "playwright-core": "1.64.0"
   }
 }

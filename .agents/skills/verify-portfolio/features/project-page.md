@@ -23,7 +23,11 @@ Preconditions: preview running; start from `/`.
 - **Lightbox.** Click the first `.shot` (the lead screenshot, or the first in the strip). `document.querySelector("[data-lightbox]").open` is true, and its image `src` is a `/_astro/*.webp`. Press Escape and it's false.
 - **Budget.** In `report.json` from `bun run shots`, every `/projects/*` desktop height is at or under 2,800.
 
+- **Clip.** `document.querySelector("[data-clip]")` is playing (`paused === false`). With reduced motion it's paused and shows controls.
+
 ## Gotchas
+
+- The clips are rendered, not recorded: `scripts/peeks/stories.js` places overlays in each screenshot's natural pixels. Swap a screenshot and its storyboard positions go stale, so re-render with `bun run peeks -- <slug>` and look at the frames in `.artifacts/peeks/<slug>/`.
 
 - A `#` inside an unquoted YAML string starts a comment and silently cuts the text. Quote any line with ` #`.
 - The schema checks `icon` against `simple-icons` exports, so a typo fails the build. Leave `icon` out for tools without one.

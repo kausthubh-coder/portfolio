@@ -26,6 +26,11 @@ bun run shots    # build, then screenshot every route at 1280 and 390, light and
 
 `bun run shots` fails on console errors, 404s and sideways scrolling. See `.agents/skills/verify-portfolio/SKILL.md`.
 
+```sh
+bun run peeks    # re-render the product clips in public/peeks/ (needs ffmpeg on PATH)
+bun run og       # re-render public/og.png, the link preview image
+```
+
 ## Where things live
 
 ```
@@ -42,11 +47,13 @@ src/
   styles/global.css              tokens and every shared style
 public/                          font, site logo, share image, tool icons
 scripts/shots.mjs                the screenshot check
+scripts/peeks/                   storyboards and renderer for the product clips
+public/peeks/<slug>.mp4          the clip that plays in the home peek and leads the project page
 ```
 
 ## Common edits
 
-- **Add a project:** add `src/content/projects/<slug>.yaml` and a `<slug>/` folder with `logo.png` and screenshots. Copy an existing file for the shape. The home row, its page, the next/previous links, the 404 and the sitemap all pick it up.
+- **Add a project:** add `src/content/projects/<slug>.yaml` and a `<slug>/` folder with `logo.png` and screenshots. Copy an existing file for the shape. The home row, its page, the next/previous links, the 404 and the sitemap all pick it up. For a clip, add a storyboard to `scripts/peeks/stories.js` and run `bun run peeks -- <slug>`; without one the page falls back to the first screenshot.
 - **Update the workflow page:** edit the tool lists in `src/pages/workflow.astro`, then bump `workflowUpdated` in `src/data/site.ts`.
 - **Change the domain, description or email:** `src/data/site.ts`.
 

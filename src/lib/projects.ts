@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { getImage } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
 import * as simpleIcons from "simple-icons";
@@ -20,7 +21,15 @@ export async function getProjects() {
           return { ...preview, fullSrc: full.src };
         }),
       );
-      return { slug: entry.id, ...entry.data, previews, logoSrc: logo.src, peekSrc: peek.src };
+      // The clip from `bun run peeks`, when one has been rendered for this project.
+      const clip = existsSync(`public/peeks/${entry.id}.mp4`)
+        ? {
+            src: `/peeks/${entry.id}.mp4`,
+            poster: `/peeks/${entry.id}.webp`,
+            shape: entry.data.previews[0].mobile ? ("tall" as const) : ("wide" as const),
+          }
+        : null;
+      return { slug: entry.id, ...entry.data, previews, clip, logoSrc: logo.src, peekSrc: peek.src };
     }),
   );
 }

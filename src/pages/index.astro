@@ -50,6 +50,9 @@ const skills = ["/optimize", "/init-project", "critly"];
                 href={`/projects/${project.slug}/`}
                 data-slug={project.slug}
                 data-peek={project.peekSrc}
+                data-clip={project.clip?.src}
+                data-poster={project.clip?.poster}
+                data-shape={project.clip?.shape ?? "wide"}
                 style={`--tilt: ${project.angle}deg;`}
               >
                 <img
@@ -158,7 +161,10 @@ const skills = ["/optimize", "/init-project", "critly"];
     </footer>
   </main>
 
-  <div class="peek" aria-hidden="true" data-peek-card><img alt="" width="240" height="150" decoding="async" /></div>
+  <div class="peek" aria-hidden="true" data-peek-card>
+    <img alt="" width="360" height="225" decoding="async" />
+    <video muted loop playsinline preload="none" width="360" height="225" hidden></video>
+  </div>
 
   <IntroSequence />
 </BaseLayout>
@@ -191,9 +197,11 @@ const skills = ["/optimize", "/init-project", "critly"];
       row.addEventListener("animationend", () => row.classList.remove("is-returning"), { once: true });
     });
 
-    // The peek: a screenshot that trails the cursor and leans into the motion.
+    // The peek: a short clip of the product (or a screenshot when there's no
+    // clip) that trails the cursor and leans into the motion.
     const peek = document.querySelector("[data-peek-card]");
     const image = peek?.querySelector("img");
+    const video = peek?.querySelector("video");
     const canPeek =
       peek &&
       window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 900px)").matches &&
@@ -227,7 +235,13 @@ const skills = ["/optimize", "/init-project", "critly"];
     };
 
     list.addEventListener("pointermove", (event) => {
-      target = { x: event.clientX + 24, y: event.clientY + 20 };
+      // Keep the whole card on screen: it flips above the cursor near the bottom.
+      const below = event.clientY + 20;
+      const fits = below + peek.offsetHeight < window.innerHeight - 12;
+      target = {
+        x: Math.min(event.clientX + 24, window.innerWidth - peek.offsetWidth - 12),
+        y: fits ? below : Math.max(12, event.clientY - peek.offsetHeight - 20),
+      };
       if (showing) {
         if (!frame) frame = requestAnimationFrame(tick);
         return;
@@ -237,10 +251,30 @@ const skills = ["/optimize", "/init-project", "critly"];
       openTimer = window.setTimeout(show, 320);
     });
 
+    // Loading starts as soon as the pointer reaches a row, so the clip has the
+    // rest delay to buffer before the card opens. Each row starts its clip over.
+    const load = (row) => {
+      peek.classList.toggle("is-tall", row.dataset.shape === "tall");
+      const clip = row.dataset.clip;
+      video.hidden = !clip;
+      image.hidden = Boolean(clip);
+      if (!clip) {
+        video.pause();
+        if (image.getAttribute("src") !== row.dataset.peek) image.src = row.dataset.peek;
+        return;
+      }
+      if (video.getAttribute("src") !== clip) {
+        video.poster = row.dataset.poster;
+        video.src = clip;
+      }
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    };
+
     rows.forEach((row) => {
       row.addEventListener("pointerenter", () => {
         window.clearTimeout(closeTimer);
-        if (image.getAttribute("src") !== row.dataset.peek) image.src = row.dataset.peek;
+        load(row);
       });
     });
 
@@ -249,6 +283,7 @@ const skills = ["/optimize", "/init-project", "critly"];
       closeTimer = window.setTimeout(() => {
         showing = false;
         peek.classList.remove("is-on");
+        video.pause();
       }, 120);
     });
     window.addEventListener("pagehide", () => peek.classList.remove("is-on"));

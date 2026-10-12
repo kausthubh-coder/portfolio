@@ -21,10 +21,11 @@ type Props = { project: Project; previous: Project; next: Project };
 const { project, previous, next } = Astro.props;
 const pageTitle = `${project.name}: ${project.description} | ${site.name}`;
 
-// A desktop screenshot leads the page. Phone-only projects show their screens
-// side by side instead, since one phone screen alone reads as a thin strip.
+// The clip leads the page when there is one, since it shows the product doing
+// its thing. Otherwise a desktop screenshot leads; phone-only projects show
+// their screens side by side, since one phone screen alone reads as a thin strip.
 const [first, ...others] = project.previews;
-const lead = first.mobile ? null : first;
+const lead = project.clip || first.mobile ? null : first;
 const strip = lead ? others : project.previews;
 const [primary, ...secondary] = project.links;
 ---
@@ -70,6 +71,29 @@ const [primary, ...secondary] = project.links;
         }
       </div>
     </header>
+
+    {
+      project.clip && (
+        <figure class:list={["pd-lead", "pd-clip", { "pd-clip--tall": project.clip.shape === "tall" }]}>
+          <div class="shot">
+            <video
+              src={project.clip.src}
+              poster={project.clip.poster}
+              width={project.clip.shape === "tall" ? 540 : 1120}
+              height={project.clip.shape === "tall" ? 960 : 700}
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              aria-label={`A short clip of ${project.name} in use`}
+              data-clip
+            />
+          </div>
+          <figcaption>a quick look, made from real screens</figcaption>
+        </figure>
+      )
+    }
 
     {
       lead && (
@@ -219,6 +243,14 @@ const [primary, ...secondary] = project.links;
     const dialog = document.querySelector("[data-lightbox]");
     const full = dialog?.querySelector("[data-lightbox-image]");
     const strip = document.querySelector("[data-shots]");
+    // Reduced motion: the clip waits for a press instead of playing on its own.
+    const clip = document.querySelector("[data-clip]");
+    if (clip && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      clip.removeAttribute("autoplay");
+      clip.pause();
+      clip.controls = true;
+    }
+
     if (!dialog || !full) return;
 
     // With a mouse, the strip can be dragged sideways like a phone.
