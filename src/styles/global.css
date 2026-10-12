@@ -804,6 +804,7 @@ html[data-intro-state="done"] .home-more {
   left: 0;
   z-index: 20;
   width: 360px;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   border-radius: var(--r-md);
   background: var(--surface);
@@ -823,6 +824,7 @@ html[data-intro-state="done"] .home-more {
 /* Phone apps peek as a phone. */
 .peek.is-tall {
   width: 180px;
+  aspect-ratio: 9 / 16;
   border-radius: 22px;
 }
 
@@ -831,17 +833,16 @@ html[data-intro-state="done"] .home-more {
   scale: 1;
 }
 
+/* The card owns the shape and the media fills it, so a browser that sizes a
+   video by its own pixels can't stretch the card. */
 .peek img,
 .peek video {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 10;
+  height: 100%;
   object-fit: cover;
   object-position: top;
-}
-
-.peek.is-tall video {
-  aspect-ratio: 9 / 16;
 }
 
 .peek [hidden] {
@@ -1346,18 +1347,24 @@ html[data-intro-state="done"] .home-more {
   font-size: var(--t-xs);
 }
 
+/* Same as the peek: the frame holds the clip's shape and the video fills it. */
 .pd-clip .shot {
+  aspect-ratio: 16 / 10;
   cursor: default;
 }
 
 .pd-clip video {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* A phone clip stays phone-sized instead of filling the column. */
 .pd-clip--tall .shot {
   width: min(300px, 70%);
+  aspect-ratio: 9 / 16;
   margin-inline: auto;
   border-radius: 28px;
 }
