@@ -1,6 +1,6 @@
 # Project page
 
-Each `src/content/projects/<slug>.yaml` becomes `/projects/<slug>/`, in the order a visitor asks: name, status and platforms, the one-liner, a summary, one solid action button, a lead screenshot, up to three real numbers, what it does, more screens, why it was built, what it is built with, an optional "how it works", and next/previous.
+Each `src/content/projects/<slug>.yaml` becomes `/projects/<slug>/`, in the order a visitor asks: name, status and platforms, the one-liner, a summary, one solid action button, a lead screenshot, up to three real numbers, what it does, more screens, why it was built, what it is built with, an optional "how it works", and a row of the other projects.
 
 ## Sub-features
 
@@ -8,7 +8,7 @@ Each `src/content/projects/<slug>.yaml` becomes `/projects/<slug>/`, in the orde
 - `page-strip` screenshots share one height and scroll sideways; with a mouse they can be dragged.
 - `page-lightbox` clicking a screenshot opens it large in a dialog; a click or Escape closes it.
 - `page-how` "how it works" opens and closes (animated where `interpolate-size` is supported).
-- `page-next` previous/next links wrap around the list.
+- `page-more` a row of the other projects, starting with the next one, grey until pointed at.
 
 ## How to get to it (user POV)
 

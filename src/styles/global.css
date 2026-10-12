@@ -441,6 +441,24 @@ kbd {
   transform: translateX(-4px);
 }
 
+.work-row__logo,
+.pd-hero__logo,
+.pd-more img,
+.lost__projects img {
+  outline: 1px solid oklch(0 0 0 / 0.08);
+  outline-offset: -1px;
+}
+
+:root[data-theme="dark"] :is(.work-row__logo, .pd-hero__logo, .pd-more img, .lost__projects img) {
+  outline-color: oklch(1 0 0 / 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) :is(.work-row__logo, .pd-hero__logo, .pd-more img, .lost__projects img) {
+    outline-color: oklch(1 0 0 / 0.12);
+  }
+}
+
 /* ---- intro -------------------------------------------------------------- */
 
 .intro-shell {
@@ -817,6 +835,13 @@ html[data-intro-state="done"] .home-more {
 .peek video {
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+}
+
+.peek.is-tall video {
+  aspect-ratio: 9 / 16;
 }
 
 .peek [hidden] {
@@ -1522,19 +1547,17 @@ html[data-intro-state="done"] .home-more {
   line-height: 1.5;
 }
 
-.pd-how {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
+/* Reads like the other section headings, with a + that turns into an x. */
 .pd-how summary {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  padding: var(--s-4) 0;
+  gap: var(--s-2);
   cursor: pointer;
   list-style: none;
+}
+
+.pd-how summary:hover {
+  color: var(--muted);
 }
 
 .pd-how summary::-webkit-details-marker {
@@ -1543,8 +1566,14 @@ html[data-intro-state="done"] .home-more {
 
 .pd-how summary::after {
   content: "+";
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--surface-2);
   color: var(--muted);
-  font-size: var(--t-lg);
+  font-size: var(--t-sm);
   font-weight: var(--w-regular);
   line-height: 1;
   transition: transform 240ms var(--ease-out);
@@ -1557,7 +1586,6 @@ html[data-intro-state="done"] .home-more {
 .pd-how__body {
   display: grid;
   gap: var(--s-4);
-  padding-bottom: var(--s-6);
 }
 
 .pd-how h3 {
@@ -1584,60 +1612,49 @@ html[data-intro-state="done"] .home-more {
   }
 }
 
-.pd-next {
+/* The rest of the work, as a row of marks: grey until you point at one. */
+.pd-more ul {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--s-3);
-  margin-top: var(--s-16);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s-2);
+  margin-inline: calc(var(--s-2) * -1);
 }
 
-.pd-next a {
+.pd-more a {
   display: grid;
-  gap: var(--s-1);
-  padding: var(--s-4);
+  justify-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-1);
   border-radius: var(--r-md);
-  box-shadow: 0 0 0 1px var(--line);
-  font-size: var(--t-sm);
+  color: var(--muted);
+  font-size: var(--t-xs);
   transition: transform 120ms var(--ease-out);
 }
 
-.pd-next a:last-child {
-  text-align: right;
-}
-
-.pd-next a:hover {
-  background: var(--surface);
-}
-
-.pd-next a:active {
-  transform: scale(0.985);
-}
-
-.pd-next small {
-  color: var(--faint);
-  font-size: var(--t-xs);
-}
-
-.pd-next__name {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  font-weight: var(--w-medium);
-}
-
-.pd-next a:last-child .pd-next__name {
-  justify-content: end;
-}
-
-.pd-next img {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
+.pd-more img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   filter: grayscale(1);
+  opacity: 0.88;
+  transition: transform 240ms var(--ease-out);
 }
 
-.pd-next a:hover img {
+.pd-more a:hover,
+.pd-more a:focus-visible {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.pd-more a:hover img,
+.pd-more a:focus-visible img {
   filter: none;
+  opacity: 1;
+  transform: rotate(var(--tilt)) scale(1.08);
+}
+
+.pd-more a:active {
+  transform: scale(0.97);
 }
 
 /* Full-size screenshot viewer. */
@@ -1918,16 +1935,14 @@ html[data-intro-state="done"] .home-more {
     padding-inline: var(--gutter);
   }
 
-  .pd-next {
-    grid-template-columns: 1fr;
+  .pd-more ul {
+    gap: 0;
   }
 
-  .pd-next a:last-child {
-    text-align: left;
-  }
-
-  .pd-next a:last-child .pd-next__name {
-    justify-content: start;
+  .pd-more img {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
   }
 }
 
