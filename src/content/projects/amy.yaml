@@ -24,20 +24,35 @@ numbers:
   - value: "0"
     label: accounts, ads or tracking SDKs
 previews:
-  - src: ./amy/01-line.webp
-    alt: Amy today screen with the line two eggs toast estimated at 390 calories
-    title: one line
-    caption: '"two eggs toast" becomes 390 cal right on the line.'
+  - src: ./amy/01-today.webp
+    alt: Amy today screen with five lines like oat milk latte and two eggs and toast, each with its calories, and a 24 day streak
+    title: one line each
+    caption: one food per line, calories on the right.
     mobile: true
-  - src: ./amy/02-photo.webp
-    alt: Amy food photo capture with an optional prompt
-    title: photos
-    caption: snap a meal, add a note if you want, and amy estimates it.
+  - src: ./amy/02-line.webp
+    alt: Amy edit sheet for two eggs and toast, split into fried eggs at 180 and sourdough toast at 210
+    title: open a line
+    caption: every line opens up into numbers you can still change.
     mobile: true
   - src: ./amy/03-streaks.webp
-    alt: Amy stats with a streak and today's calories and macros against goals
+    alt: Amy streaks with a 24 day streak, today's calories against the goal and a filled October calendar
     title: streaks
     caption: streaks, plus today's calories and macros against your goals.
+    mobile: true
+  - src: ./amy/04-week.webp
+    alt: Amy stats for a week with a calorie bar for each day and protein below
+    title: the week
+    caption: a week of calories and macros at a glance.
+    mobile: true
+  - src: ./amy/05-barcode.webp
+    alt: Amy barcode result for an energy bar from Open Food Facts with servings and a log button
+    title: barcodes
+    caption: barcodes through Open Food Facts, no key needed.
+    mobile: true
+  - src: ./amy/06-widgets.webp
+    alt: Android home screen with Amy's two widgets showing today's lines and calories
+    title: widgets
+    caption: two widgets that open straight into logging.
     mobile: true
 features:
   - title: one food per line

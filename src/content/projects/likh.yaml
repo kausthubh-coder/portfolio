@@ -4,7 +4,7 @@ year: 2026
 status: live
 logo: ./likh/logo.png
 angle: -4
-description: native dictation for windows that idles at 14 MB
+description: native dictation for windows that idles at 11 MB
 platforms: windows, mac in alpha
 license: MIT
 summary: >-
@@ -18,34 +18,38 @@ links:
   - label: github
     href: https://github.com/kausthubh-coder/likh
 numbers:
-  - value: 14 MB
+  - value: 11 MB
     label: memory while it waits
   - value: 0%
     label: CPU while it waits
   - value: 4.9 MB
     label: the whole download
 previews:
-  - src: ./likh/settings-general.webp
-    alt: Likh general settings with the Ctrl plus Space shortcut, a mouse button option and three ways to start recording
-    title: settings
-    caption: pick the shortcut or a mouse button, and how it starts. hold, tap for hands-free, or tap to toggle.
-  - src: ./likh/onboarding-welcome.webp
+  - src: ./likh/01-dictation.webp
+    alt: Likh dictation settings with the Ctrl plus Space shortcut lit on a small keyboard, a mouse button option, hold or tap mode and stop after quiet
+    title: dictation
+    caption: pick the shortcut on the keyboard or use a mouse button, then how it starts and when it stops.
+  - src: ./likh/02-welcome.webp
     alt: Likh welcome screen reading Talk. It types.
     title: first run
     caption: a short setup and you're dictating.
     mobile: true
-  - src: ./likh/settings-commands.webp
+  - src: ./likh/03-transcription.webp
+    alt: Likh transcription settings with ChatGPT through Codex connected, a Groq key option and the language set to auto-detect
+    title: transcription
+    caption: your ChatGPT plan through Codex, or a free Groq key.
+  - src: ./likh/04-commands.webp
     alt: Likh commands settings with spoken commands for lines and lists, pressing a key and taking it back
     title: commands
     caption: say "new bullet" or "press enter", or "scratch that" to take it back.
-  - src: ./likh/settings-groq.webp
-    alt: Likh transcription settings choosing between ChatGPT through Codex and a free Groq key
-    title: transcription
-    caption: your ChatGPT plan through Codex, or a free Groq key.
-  - src: ./likh/settings-history.webp
-    alt: Likh history list of recent dictations
+  - src: ./likh/05-history.webp
+    alt: Likh history with a paste last dictation shortcut and four recent dictations
     title: history
     caption: everything you said stays on your machine, so you can grab it again later.
+  - src: ./likh/06-dictionary.webp
+    alt: Likh dictionary settings with names like Critly, Kriyan and Studi, and fix misheard names turned on
+    title: dictionary
+    caption: in the next release. add the names it gets wrong and it spells them your way.
 features:
   - title: hold, talk, let go
     body: a system-wide shortcut or a mouse button records you, transcribes it, and pastes at your cursor in any app.
@@ -58,7 +62,7 @@ features:
 story:
   - I wanted dictation that's instant, reliable, and free to leave running. the ones I tried sat at hundreds of MB doing nothing.
   - likh reuses the ChatGPT plan I already pay for, so there's no key to paste. early tests had the GPU renderer idling at over 200 MB, so the GPU went, and so did the fancy glass.
-  - I tried windows' built-in speech as a free option too. it didn't work for me in practice, so it came out the same day. a free Groq key stayed.
+  - the next release adds a dictionary for the names it mishears, alt + shift + z to paste the last one again, a mic picker with a test, a language you can pin, and "no voice heard" instead of sending silence.
 stack:
   - name: Rust
     icon: siRust
