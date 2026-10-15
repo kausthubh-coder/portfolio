@@ -17,8 +17,8 @@ Live at <https://kausthubh.dev>.
 ## Commands
 
 ```sh
-bun install
-bun run dev      # local dev server
+bun run setup    # deps, this checkout's own port, the skills link, then the doctor
+bun run dev      # local dev server on that port
 bun run check    # astro check (types, templates, content schema)
 bun run build    # check, then build to dist/
 bun run shots    # build, then screenshot every route at 1280 and 390, light and dark
@@ -28,6 +28,7 @@ bun run shots    # build, then screenshot every route at 1280 and 390, light and
 
 ```sh
 bun run peeks    # re-render the product clips in public/peeks/ (needs ffmpeg on PATH)
+bun run peeks -- kriyan --stills   # a contact sheet of one clip, every 400 ms, without encoding
 bun run og       # re-render public/og.png, the link preview image
 ```
 
@@ -46,14 +47,16 @@ src/
   pages/                         index, projects/[slug], workflow, 404, sitemap, robots
   styles/global.css              tokens and every shared style
 public/                          font, site logo, share image, tool icons
+scripts/setup.mjs                setup and doctor; port.mjs runs dev on the checkout's port; remove.mjs removes a worktree
 scripts/shots.mjs                the screenshot check
 scripts/peeks/                   storyboards and renderer for the product clips
+scripts/peeks/shots/<slug>/      real UI states captured for a clip, crossfaded in order
 public/peeks/<slug>.mp4          the clip that plays in the home peek and leads the project page
 ```
 
 ## Common edits
 
-- **Add a project:** add `src/content/projects/<slug>.yaml` and a `<slug>/` folder with `logo.png` and screenshots. Copy an existing file for the shape. The home row, its page, the next/previous links, the 404 and the sitemap all pick it up. For a clip, add a storyboard to `scripts/peeks/stories.js` and run `bun run peeks -- <slug>`; without one the page falls back to the first screenshot.
+- **Add a project:** add `src/content/projects/<slug>.yaml` and a `<slug>/` folder with `logo.png` and screenshots. Copy an existing file for the shape. The home row, its page, the next/previous links, the 404 and the sitemap all pick it up. For a clip, capture a few real states of one interaction at the same size into `scripts/peeks/shots/<slug>/`, add a storyboard to `scripts/peeks/stories.js` and run `bun run peeks -- <slug>`; without one the page falls back to the first screenshot.
 - **Update the workflow page:** edit the tool lists in `src/pages/workflow.astro`, then bump `workflowUpdated` in `src/data/site.ts`.
 - **Change the domain, description or email:** `src/data/site.ts`.
 

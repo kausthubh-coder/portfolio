@@ -8,10 +8,13 @@
   },
   "private": true,
   "scripts": {
-    "dev": "astro dev",
+    "setup": "node scripts/setup.mjs",
+    "doctor": "node scripts/setup.mjs --doctor",
+    "remove": "node scripts/remove.mjs",
+    "dev": "node scripts/port.mjs astro dev --port {port}",
     "build": "astro check && astro build",
     "check": "astro check",
-    "preview": "astro preview",
+    "preview": "node scripts/port.mjs astro preview --port {port}",
     "shots": "node scripts/shots.mjs",
     "peeks": "node scripts/peeks/render.mjs",
     "og": "node scripts/og.mjs"

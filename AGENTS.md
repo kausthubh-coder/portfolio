@@ -4,6 +4,8 @@ Kausthubh's personal site. Static Astro, Bun, deployed on Vercel from `main`. Th
 
 ## Commands
 
+- `bun run setup`: make this checkout ready (deps, its own port, the skills link), then the doctor. `bun run doctor` checks only. `bun run remove -- <path>` removes a merged worktree.
+- Every task in a new worktree starts with `worktree-portfolio`. Ship only with `ship-portfolio`, when Kausthubh says so.
 - `bun run build`: astro check (types and the project schema), then build.
 - `bun run shots`: build, serve, and screenshot every route at 1280 and 390, light and dark. It fails on console errors, 404s or sideways scroll. Run it before saying a change is done, and look at the shots it names.
 - Driving interactions (hover peek, theme toggle, transitions, keyboard): `.agents/skills/verify-portfolio/SKILL.md`.

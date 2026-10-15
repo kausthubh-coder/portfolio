@@ -8,6 +8,8 @@ export default defineConfig({
   vite: {
     server: {
       hmr: false,
+      // Fail instead of drifting onto the next port, which may be another worktree's.
+      strictPort: true,
     },
   },
 });

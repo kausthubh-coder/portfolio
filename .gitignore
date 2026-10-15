@@ -19,3 +19,6 @@ src/pages/ai-enginere.astro
 src/pages/studi-demo.astro
 src/components/AiEngineerProof.astro
 src/components/StudiDemoMockups.astro
+
+# junction to .agents/skills, made by bun run setup
+.claude/skills
