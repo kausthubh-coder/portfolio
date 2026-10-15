@@ -27,7 +27,7 @@ Preconditions: preview running; start from `/`.
 
 ## Gotchas
 
-- The clips are rendered, not recorded: `scripts/peeks/stories.js` places overlays in each screenshot's natural pixels. Swap a screenshot and its storyboard positions go stale, so re-render with `bun run peeks -- <slug>` and look at the frames in `.artifacts/peeks/<slug>/`.
+- The clips are rendered, not recorded: `scripts/peeks/stories.js` crossfades real captured states from `scripts/peeks/shots/<slug>/` and moves a camera, cursor and captions over them, all placed in the capture's own pixels. Swap a capture and its positions go stale. Check a storyboard with `bun run peeks -- <slug> --stills` (a contact sheet in `.artifacts/peeks/<slug>-stills.png`), make sure no caption covers what the cursor clicks, then render it.
 
 - A `#` inside an unquoted YAML string starts a comment and silently cuts the text. Quote any line with ` #`.
 - The schema checks `icon` against `simple-icons` exports, so a typo fails the build. Leave `icon` out for tools without one.

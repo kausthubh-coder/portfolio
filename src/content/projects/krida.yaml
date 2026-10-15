@@ -14,29 +14,33 @@ links:
   - label: open krida
     href: https://krida-tv.vercel.app/
 previews:
-  - src: ./krida/01-home.webp
-    alt: Krida home screen with a featured title, a watch party prompt and a row of top picks
-    title: home
-    caption: picks come from what you watch and rate, with a party one tap away.
-  - src: ./krida/02-watch-party.webp
-    alt: Krida player with the party panel open, showing who is watching, an up next queue and search
+  - src: ./krida/01-watch-party.webp
+    alt: Krida player showing a dragon from Sintel, with the party panel open beside it, an up next title and a short chat
     title: watch party
-    caption: the party panel sits beside the player. queue the next thing without stopping this one.
+    caption: the party sits beside the player. see who's watching, what's up next, and the chat.
+  - src: ./krida/02-home.webp
+    alt: Krida home with a featured show's title art, ratings and synopsis, and a continue watching row
+    title: home
+    caption: picks come from what you watch and rate, with what you're halfway through right under them.
   - src: ./krida/03-title.webp
-    alt: Krida title page for Dune Part Two with play and watch together buttons
+    alt: Krida title page for Interstellar with play, trailer, plan to watch, rate and watch together
     title: a title
     caption: watch together sits right next to play.
-  - src: ./krida/04-search.webp
-    alt: Krida search results grid
+  - src: ./krida/04-wrapped.webp
+    alt: Krida wrapped reading 27 hours in other worlds over a wall of posters
+    title: wrapped
+    caption: a wrapped of everything you watched, whenever you want it.
+  - src: ./krida/05-search.webp
+    alt: Krida search for christopher nolan with his films in a row, one marked watched
     title: search
-    caption: movies and shows in one place.
+    caption: movies, shows and people in one place.
 features:
   - title: watch parties that stay in sync
     body: play, pause and seek land for everyone. the party waits for whoever is buffering, with a shared queue, chat and meme sound reactions. a friend without a profile can join from a one-use link.
   - title: picks from your taste
     body: recommendations come from what you watch, save and rate, plus your Simkl history if you connect it. every title shows IMDb, Rotten Tomatoes, Metacritic and Letterboxd scores.
   - title: a player that gets out of the way
-    body: skip the recap and intro in one go, jump past the credits to what's up next, and switch episodes without leaving the player.
+    body: point at the timeline and see a picture from that moment. skip the recap and intro in one go, jump past the credits to what's up next, and switch episodes without leaving the player.
   - title: a library that's yours
     body: plan to watch, watching, watched and to rate, with stats and a wrapped. it syncs both ways with Simkl, and private mode keeps what you watch off your friend's home.
 story:
@@ -53,6 +57,9 @@ stack:
   - name: Vercel
     icon: siVercel
     why: search, ratings, home rows and picks run as functions behind its cache, so public data never touches the database.
+  - name: Cloudflare Workers
+    icon: siCloudflareworkers
+    why: the timeline pictures, one every 10 seconds, pulled from the film's own file.
   - name: hls.js
     why: adaptive streaming in the browser, with the player under my control.
   - name: Tailwind CSS

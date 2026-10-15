@@ -8,14 +8,16 @@ description: open-source planner that lets the AI you already use plan with you
 platforms: web, android, CLI and MCP
 license: MIT
 summary: >-
-  kriyan is a planner that's mostly a timeline. timed tasks sit on the day, everything else waits in a tray beside
-  it, and length is optional. it has an MCP server that can do anything the app can, so Claude or any other AI
-  client can plan with you. it's free, and the demo doesn't need an account.
+  kriyan is a calm planner for time boxing. everything you have to do goes in one place, you give it a time on your
+  day, and the plan stays quiet enough to follow. the AI you already use, Claude, ChatGPT or Cursor, can plan with you
+  through its MCP server, and nothing it suggests lands until you accept it. it's free and open source.
 links:
-  - label: try the demo
-    href: https://kriyan.app/demo
-  - label: kriyan.app
-    href: https://kriyan.app/
+  - label: open the app
+    href: https://app.kriyan.app/
+  - label: android apk
+    href: https://github.com/kausthubh-coder/kriyan/releases/latest/download/kriyan.apk
+  - label: docs
+    href: https://kriyan.app/docs
   - label: github
     href: https://github.com/kausthubh-coder/kriyan
 numbers:
@@ -23,62 +25,65 @@ numbers:
     label: ways in. web, android, CLI and MCP
   - value: "1"
     label: parser behind all of them
-  - value: "0"
-    label: sign-ups to try it
 previews:
-  - src: ./kriyan/01-day.webp
-    alt: Kriyan day view with a task tray, a timeline, and the week, deadlines and goals on the side
-    title: the day
-    caption: tray on the left, timeline in the middle, the week, deadlines and goals on the right.
+  - src: ./kriyan/01-today.webp
+    alt: Kriyan today view with the next task, habits and anytime tasks on the left and the day's schedule on the right
+    title: today
+    caption: what's next, what's left, and the day beside it.
   - src: ./kriyan/02-repeat.webp
-    alt: Kriyan task panel with repeat set to every week on Monday and Wednesday, and reminders below
+    alt: Kriyan repeat editor set to every Tuesday and Thursday, with presets, weekday toggles and the next five dates
     title: repeats
-    caption: open a task to set how it repeats and when it reminds you.
+    caption: type the repeat or click it, and check the next five dates before you save.
   - src: ./kriyan/03-week.webp
-    alt: Kriyan week view with Thursday marked 6h 50m, over capacity
+    alt: Kriyan upcoming week with Thursday marked 9.3 hours, 2.3 hours over
     title: the week
-    caption: the week flags a day that has more work than hours.
-  - src: ./kriyan/04-goals.webp
-    alt: Kriyan goals view with pace markers
-    title: goals
-    caption: goals show where you should be today, not just a percentage.
-  - src: ./kriyan/05-android.webp
-    alt: Kriyan Android app showing the day with a task tray
-    title: android
-    caption: the same day on your phone.
+    caption: the week tells you thursday doesn't fit before thursday does.
+  - src: ./kriyan/04-progress.webp
+    alt: Kriyan progress with hours by space, a year-long heatmap and goals with pace markers
+    title: progress
+    caption: goals show where a steady pace would put you today, not just a percent.
+  - src: ./kriyan/05-proposal.webp
+    alt: Kriyan week with three outlined blocks proposed by Claude and an accept all banner
+    title: your AI's plan
+    caption: Claude proposed three blocks. they wait outlined until you accept or discard them.
+  - src: ./kriyan/06-phone.webp
+    alt: Kriyan today view at phone size with the next task and a bottom tab bar
+    title: on your phone
+    caption: the same app at phone size. android gets reminders too.
     mobile: true
 features:
   - title: your day on one timeline
-    body: drag to schedule or resize. tasks without a time wait in the tray, and the week shows when you're overbooked.
+    body: today shows what's next, your habits, anytime tasks and the free time left. drag tasks onto the timeline, and the week flags a day that has more work than hours.
   - title: type it like you'd say it
-    body: 'quick-add turns "essay fri #econ 2h" into a day, an area and a length. it reads repeats and reminders too.'
+    body: 'quick-add turns "calculus lecture every tue and thu 9am for 1h30 #school/calculus" into a time, a length, a repeat and a space.'
   - title: repeats and reminders
-    body: repeat every weekday, monthly on the 2nd tuesday, or 3 days after it's done. reminders can count back from a deadline, and reach your phone even if your AI added the task.
+    body: chosen weekdays, the 2nd tuesday of the month, yearly, or 3 days after it's done, until a date or a number of times. reminders reach your phone even if your AI added the task.
   - title: plan with the AI you already use
-    body: the MCP server can do anything the app can. ask your AI to organise your life and it sets up areas, deadlines and goals, after showing you the plan.
+    body: add kriyan.app/mcp as a connector in Claude or ChatGPT and it can do anything the app can. it proposes a plan, the blocks show up outlined, and you accept or discard them.
 story:
   - I wanted a planner that's mostly a timeline, where length is optional, and where the AI I already talk to can plan with me instead of being one more app to open.
-  - so it's one backend with four ways in, and it's open source, so your data stays yours.
+  - the first version worked but got busy. so I rebuilt it in october to be calmer, with one Expo app for android and the web, spaces inside spaces, and plans from your AI that wait for a yes.
+  - it's one backend with four ways in, and it's open source, so your data stays yours.
 stack:
-  - name: Next.js
-    icon: siNextdotjs
-    why: one app serves the site, the web app, the docs, the API and /mcp.
+  - name: Expo
+    icon: siExpo
+    why: one app for android and the web, so they never drift apart.
   - name: Convex
     icon: siConvex
     why: one live backend shared by every surface.
+  - name: Next.js
+    icon: siNextdotjs
+    why: the site, the docs and the MCP server at /mcp.
   - name: Clerk
     icon: siClerk
-    why: one sign-in across web, android, the CLI and MCP.
-  - name: Expo
-    icon: siExpo
-    why: the android app, shipped as an APK.
+    why: one sign-in across the app, the CLI and your AI's connector.
   - name: MCP
     icon: siModelcontextprotocol
-    why: how your AI gets to your tasks.
+    why: how your AI gets to your tasks, with OAuth for Claude and ChatGPT.
 architecture:
   - title: one parser everywhere
-    body: a shared core package holds the quick-add parser, dates and repeat rules with no React, so every surface reads "fri 2h" or "every weekday" the same way.
+    body: a shared core package holds the quick-add parser, dates, repeats and reminders with no React, so every surface reads "tue 9am for 1h" or "every weekday" the same way.
   - title: one backend, four ways in
-    body: web, android, the CLI and the MCP server all call the same Convex functions, so a task Claude adds shows up on your phone right away.
-  - title: a whole plan in one go
-    body: apply_plan saves classes, tasks and goals in one Convex transaction and skips what's already there, so running it again never duplicates anything.
+    body: the app, the CLI and the MCP server all call the same Convex functions, so a task Claude adds shows up on your phone right away.
+  - title: plans wait for a yes
+    body: propose_plan saves your AI's blocks as a proposal. they show up outlined on the week, and nothing becomes a real task until you accept, unless you tell kriyan to let agents edit directly.

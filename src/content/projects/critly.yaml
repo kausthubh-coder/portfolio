@@ -19,35 +19,43 @@ links:
   - label: github
     href: https://github.com/kausthubh-coder/critly
 numbers:
-  - value: "87"
+  - value: "100"
     label: design concepts, each with a demo
   - value: "15"
     label: rules the check runs by default
   - value: "2"
     label: agent skills, generated from the library
 previews:
-  - src: ./critly/01-concept.webp
-    alt: Critly concept page about tabular numbers with a toggleable demo
-    title: a concept
-    caption: one idea, one rule, and a demo you can flip between wrong and right.
-  - src: ./critly/02-easings.webp
-    alt: Critly easing concept in dark mode comparing ease-in and ease-out
-    title: easing, side by side
-    caption: the same 250ms menu with ease-in and ease-out, so you can feel the difference.
-  - src: ./critly/03-phone.webp
-    alt: Critly concept page on a phone in dark mode
+  - src: ./critly/01-direction.webp
+    alt: Critly Direction First demo showing a night bus app styled like a dot-matrix destination blind, with each design value labelled with where it came from
+    title: direction first
+    caption: a night bus app that looks like the bus's own destination blind. every value says which thing it came from.
+  - src: ./critly/02-first-screen.webp
+    alt: Critly First Screen demo with a strong landing page for a field survey app and a checklist all green
+    title: the first screen
+    caption: say what it is, show the product, offer one next step. flip it to weak to see the difference.
+  - src: ./critly/03-signature-move.webp
+    alt: Critly Signature Move demo in dark mode, a tide app with its tide curve shown big on the first screen and the finished swim
+    title: a signature move
+    caption: one move, big where people pause, and the everyday list stays plain.
+  - src: ./critly/04-check.webp
+    alt: Critly check output with two findings, each with where, actual, fix and the concept to read
+    title: the check
+    caption: every finding names the fix and the concept behind it, and exits 1.
+  - src: ./critly/05-phone.webp
+    alt: Critly Direction First demo on a phone in dark mode, the night bus app in hi-vis yellow and black
     title: on a phone
-    caption: the library reads just as well at 390px.
+    caption: the same brief at 390px, in its hi-vis direction.
     mobile: true
 features:
   - title: a library you can try
-    body: concepts across type, colour, spacing, motion, states, sound and performance, each with real numbers and an interactive demo.
+    body: concepts across type, colour, spacing, motion, states, sound and performance, and now identity and marketing too, each with real numbers and an interactive demo.
   - title: native apps too
     body: a mobile section for iOS and Android, with gestures, haptics, sheets, safe areas and the soft keyboard, for SwiftUI, Compose, Flutter and React Native.
   - title: skills for your agent
-    body: critly builds and reviews UI with the concepts, and critly-audit audits a whole app and sets up the check. this site was redone with them.
+    body: critly builds and reviews UI with the concepts, and critly-audit audits a whole app and sets up the check. before it picks a look, the agent builds two different first screens, compares them at real size and keeps the better one. this site was redone with them.
   - title: a check it can't skip
-    body: critly check opens your running app at phone and desktop widths, light and dark, and fails with the fix and the concept named, so an agent can't talk its way past it.
+    body: critly check opens your running app at phone and desktop widths, light and dark, and fails with the fix and the concept named, so an agent can't talk its way past it. a taste pass covers what no rule can fail, like how many boxes are on the first screen.
 story:
   - writing code costs almost nothing now. design is the slow part. agents build UI that works but feels generic, with default easings, no states past the happy path, and off-scale spacing.
   - rules in a prompt get read once and forgotten. I wanted principles an agent actually uses while it builds, and a check it can't argue with.
