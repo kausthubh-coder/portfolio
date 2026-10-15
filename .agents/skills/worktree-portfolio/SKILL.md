@@ -24,7 +24,7 @@ Then `bun run dev` and `bun run preview` serve on that port. Run them through `b
 
 When an agent runs `bun run dev`, Astro 7 detects it and starts the server in the background, one per checkout: the command returns at once, and running it again reports the server already up. From the same checkout, `bunx astro dev status`, `bunx astro dev logs` and `bunx astro dev stop` manage it.
 
-There is no backend, database or secret. The site is static and the main checkout has no env files, so nothing is shared between checkouts and nothing is copied. `bun run shots` and `bun run peeks` need Google Chrome; `bun run peeks` also needs ffmpeg on PATH. The doctor reports both.
+There is no backend, database or secret. The site is static and the main checkout has no env files, so nothing is shared between checkouts and nothing is copied. `bun run shots` and `bun run peeks` need Google Chrome (or Playwright's Chromium in a cloud session); `bun run peeks` also needs ffmpeg on PATH. The doctor reports both.
 
 ## The main checkout
 

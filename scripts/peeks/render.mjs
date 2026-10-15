@@ -12,7 +12,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { chromium } from "playwright-core";
+import { launchBrowser } from "../browser.mjs";
 import sharp from "sharp";
 
 const root = process.cwd();
@@ -21,7 +21,7 @@ const out = join(root, "public", "peeks");
 const stageUrl = pathToFileURL(join(root, "scripts", "peeks", "stage.html")).href;
 mkdirSync(out, { recursive: true });
 
-const browser = await chromium.launch({ channel: "chrome", args: ["--allow-file-access-from-files"] });
+const browser = await launchBrowser({ args: ["--allow-file-access-from-files"] });
 const probe = await browser.newPage();
 await probe.goto(stageUrl);
 // Stories are laid out in stage pixels and rendered sharper than that, so a clip

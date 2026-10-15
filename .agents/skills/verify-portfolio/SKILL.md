@@ -26,7 +26,7 @@ Exit code 1 means a page logged a console error, threw, requested a same-origin 
 
 - `bun run check` passes (types and Astro diagnostics).
 - `ls dist/index.html` exists after a build.
-- Chrome is installed: the script launches it through `playwright-core` with `channel: "chrome"`, so it never downloads a browser.
+- A browser exists (the doctor's `browser` line). `scripts/browser.mjs` launches Google Chrome through `playwright-core` when it's installed, so nothing downloads locally; on a cloud VM it uses Playwright's Chromium.
 - Run the script with Node, not Bun. Under Bun, Playwright's pipe to Chrome hangs on Windows. `bun run shots` already calls `node`.
 
 ## Drive
@@ -52,4 +52,4 @@ Budgets this site holds itself to:
 
 ## Cleanup
 
-The script kills the preview it started on exit, error or Ctrl+C. With `--keep`, stop it with the `taskkill /pid <pid> /T /F` line it prints. Never kill Node or Bun by name, since other worktrees run their own servers. Leave `.artifacts/shots/` in place as evidence.
+The script kills the preview it started on exit, error or Ctrl+C. With `--keep`, stop it with the line it prints (`taskkill` on Windows, `kill` on Linux). Never kill Node or Bun by name, since other worktrees run their own servers. Leave `.artifacts/shots/` in place as evidence.

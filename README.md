@@ -48,7 +48,8 @@ src/
   styles/global.css              tokens and every shared style
 public/                          font, site logo, share image, tool icons
 scripts/setup.mjs                setup and doctor; port.mjs runs dev on the checkout's port; remove.mjs removes a worktree
-scripts/shots.mjs                the screenshot check
+scripts/shots.mjs                the screenshot check; browser.mjs picks Chrome or Playwright's Chromium
+scripts/cloud.mjs                makes a cloud session ready (run by the SessionStart hook in .claude/settings.json)
 scripts/peeks/                   storyboards and renderer for the product clips
 scripts/peeks/shots/<slug>/      real UI states captured for a clip, crossfaded in order
 public/peeks/<slug>.mp4          the clip that plays in the home peek and leads the project page

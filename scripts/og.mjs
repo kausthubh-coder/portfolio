@@ -1,7 +1,7 @@
 // Renders public/og.png, the 1200x630 image link previews show. Run it after a
 // project logo changes: `bun run og`.
 import { readFileSync } from "node:fs";
-import { chromium } from "playwright-core";
+import { launchBrowser } from "./browser.mjs";
 
 const root = process.cwd();
 const b64 = (path) => readFileSync(root + path).toString("base64");
@@ -20,7 +20,7 @@ p{font-size:36px;margin:40px 0 0;max-width:24ch;line-height:1.3}
 <p>just tryna take care of myself, retire my parents, and build cool shit.</p>
 <div class="logos">${logos.map((logo) => `<img src="data:image/png;base64,${logo}">`).join("")}</div></body></html>`;
 
-const browser = await chromium.launch({ channel: "chrome" });
+const browser = await launchBrowser();
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
 await page.setContent(html);
 await page.evaluate(() => document.fonts.ready);

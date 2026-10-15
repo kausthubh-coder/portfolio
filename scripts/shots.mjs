@@ -12,7 +12,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { join, relative, sep } from "node:path";
-import { chromium } from "playwright-core";
+import { launchBrowser } from "./browser.mjs";
 
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
@@ -58,12 +58,14 @@ const base = `http://127.0.0.1:${port}`;
 const preview = spawn(`bunx astro preview --host 127.0.0.1 --port ${port}`, {
   stdio: "ignore",
   shell: true,
+  // Its own process group off Windows, so stopping it also stops astro under the shell.
+  detached: process.platform !== "win32",
 });
 let keepPreview = false;
 const stopPreview = () => {
   if (keepPreview || preview.exitCode !== null) return;
   if (process.platform === "win32") spawnSync("taskkill", ["/pid", String(preview.pid), "/T", "/F"], { stdio: "ignore" });
-  else preview.kill();
+  else try { process.kill(-preview.pid); } catch {}
 };
 // Runs on success, on a thrown error and on Ctrl+C, so no run strands a server.
 process.on("exit", stopPreview);
@@ -78,7 +80,7 @@ for (let i = 0; ; i++) {
 }
 
 mkdirSync(out, { recursive: true });
-const browser = await chromium.launch({ channel: "chrome" });
+const browser = await launchBrowser();
 const report = [];
 
 for (const viewport of viewports) {
@@ -142,6 +144,7 @@ console.log(`\nshots: ${relative(root, out)}`);
 
 if (flag("--keep")) {
   keepPreview = true;
-  console.log(`preview still running at ${base} (pid ${preview.pid}); stop it with: taskkill /pid ${preview.pid} /T /F`);
+  const stop = process.platform === "win32" ? `taskkill /pid ${preview.pid} /T /F` : `kill -- -${preview.pid}`;
+  console.log(`preview still running at ${base} (pid ${preview.pid}); stop it with: ${stop}`);
 }
 process.exit(failed.length ? 1 : 0);

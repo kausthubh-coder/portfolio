@@ -83,13 +83,8 @@ const skillsLinked = () => {
 
 // Tools the checks need but setup can't install.
 const has = (command, args) => spawnSync(command, args, { stdio: "ignore", shell: process.platform === "win32" }).status === 0;
-const CHROME = [
-  path.join(process.env.PROGRAMFILES ?? "", "Google", "Chrome", "Application", "chrome.exe"),
-  path.join(process.env["PROGRAMFILES(X86)"] ?? "", "Google", "Chrome", "Application", "chrome.exe"),
-  path.join(process.env.LOCALAPPDATA ?? "", "Google", "Chrome", "Application", "chrome.exe"),
-  "/Applications/Google Chrome.app",
-  "/usr/bin/google-chrome",
-];
+// browser.mjs imports playwright-core, which isn't there until setup installs it.
+const findBrowser = async () => (await import("./browser.mjs")).findBrowser();
 
 async function setup() {
   if (!installed()) {
@@ -137,8 +132,8 @@ async function doctor() {
   report(true, "backend", "none (static site, nothing shared between checkouts)");
   report(true, "env", "nothing to copy; .env.local only holds PORT");
 
-  const chrome = CHROME.some((file) => file && fs.existsSync(file));
-  report(chrome, "chrome", chrome ? "found (bun run shots drives it)" : "not found; bun run shots and bun run peeks need Google Chrome", "install Google Chrome");
+  const browser = installed() ? await findBrowser() : null;
+  report(Boolean(browser), "browser", browser ? `${browser.name} (bun run shots drives it)` : "none; bun run shots and bun run peeks need Google Chrome or Playwright's Chromium", "install Google Chrome, or node node_modules/playwright-core/cli.js install chromium");
   report(true, "ffmpeg", has("ffmpeg", ["-version"]) ? "found (bun run peeks)" : "not on PATH; only bun run peeks needs it");
 
   let behind = "unknown (no origin/main)";
