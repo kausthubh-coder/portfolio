@@ -26,7 +26,7 @@ A cloud VM (Claude Code on the web, Codex Cloud) is Linux with a bare clone. The
 
 ## Rules
 
-- Never give Kausthubh a job title or role, anywhere.
+- The home subline ("designer & engineer.") is the only title or role. Don't add others.
 - Keep the home intro animation.
 - No placeholder or "coming soon" pages. Unreleased things get a line inside a real page, not their own page.
 - Copy is plain and lowercase, in Kausthubh's voice, not marketing polish.

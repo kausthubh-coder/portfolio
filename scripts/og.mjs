@@ -17,7 +17,7 @@ h1{font-size:88px;font-weight:720;letter-spacing:-0.025em;margin:0}
 p{font-size:36px;margin:40px 0 0;max-width:24ch;line-height:1.3}
 .logos{display:flex;gap:14px;margin-top:56px}.logos img{width:56px;height:56px;border-radius:13px;filter:grayscale(1)}
 </style></head><body><div class="row"><img src="data:image/webp;base64,${b64("/public/logo.webp")}"><h1>Kausthubh.N</h1></div>
-<p>just tryna take care of myself, retire my parents, and build cool shit.</p>
+<p>designer &amp; engineer.</p>
 <div class="logos">${logos.map((logo) => `<img src="data:image/png;base64,${logo}">`).join("")}</div></body></html>`;
 
 const browser = await launchBrowser();

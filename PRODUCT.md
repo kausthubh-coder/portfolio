@@ -4,7 +4,7 @@ Updated: 2026-09-17
 
 ## What this is
 
-A compact, kinetic personal site for Kausthubh N. It is a first impression, an index of favorite projects, and a way to get in touch. It is not a resume, and it does not pin Kausthubh to a role or a job title: the work is the pitch.
+A compact, kinetic personal site for Kausthubh N. It is a first impression, an index of favorite projects, and a way to get in touch. It is not a resume: one plain subline says what he does, and the work is the pitch.
 
 ## Who it is for
 
